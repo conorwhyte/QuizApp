@@ -1,0 +1,55 @@
+{
+	"providers": {
+		"awscloudformation": {
+			"AuthRoleName": "quizapp-20181228211700-authRole",
+			"UnauthRoleArn": "arn:aws:iam::744962777212:role/quizapp-20181228211700-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::744962777212:role/quizapp-20181228211700-authRole",
+			"Region": "eu-west-1",
+			"DeploymentBucketName": "quizapp-20181228211700-deployment",
+			"UnauthRoleName": "quizapp-20181228211700-unauthRole",
+			"StackName": "quizapp-20181228211700",
+			"StackId": "arn:aws:cloudformation:eu-west-1:744962777212:stack/quizapp-20181228211700/ea816d50-0ae5-11e9-b861-020975c14ca0"
+		}
+	},
+	"auth": {
+		"QuizAppV2": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/quizapp-20181228211700-deployment/amplify-cfn-templates/auth/QuizAppV2-cloudformation-template.yml",
+				"logicalId": "authQuizAppV2"
+			},
+			"lastPushTimeStamp": "2018-12-28T21:47:03.090Z",
+			"output": {
+				"CreatedSNSRole": "arn:aws:iam::744962777212:role/QuizAppV2_sns-role",
+				"AppClientSecret": "1389ohmr274hfaap3s3s0k748mqbpss6cit73hqtc79e9837tpk3",
+				"UserPoolId": "eu-west-1_kR9CJEeQp",
+				"AppClientIDWeb": "4j3f8up4l4fhsab3d51rm2p0au",
+				"AppClientID": "1qauc1ev5ej5o8njm0k2b07coa",
+				"UserPoolName": "quizapp0ba328c3_userpool_0ba328c3"
+			},
+			"lastPushDirHash": "bIKirVjPkD2RhhQpXIKQHwMyEyo="
+		}
+	},
+	"hosting": {
+		"S3AndCloudFront": {
+			"service": "S3AndCloudFront",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/quizapp-20181228211700-deployment/amplify-cfn-templates/hosting/template.json",
+				"logicalId": "hostingS3AndCloudFront"
+			},
+			"lastPushTimeStamp": "2018-12-28T21:47:03.137Z",
+			"output": {
+				"CloudFrontSecureURL": "https://dr2o1k60fqj5m.cloudfront.net",
+				"S3BucketSecureURL": "https://quizapp-20181228212757-hostingbucket.s3.amazonaws.com",
+				"WebsiteURL": "http://quizapp-20181228212757-hostingbucket.s3-website-eu-west-1.amazonaws.com",
+				"CloudFrontDistributionID": "E1A8DL2I28FH07",
+				"Region": "eu-west-1",
+				"HostingBucketName": "quizapp-20181228212757-hostingbucket",
+				"CloudFrontDomainName": "dr2o1k60fqj5m.cloudfront.net"
+			},
+			"lastPushDirHash": "Z/DAxshwkvhYCAt8lODHA/0Pgcs="
+		}
+	}
+}

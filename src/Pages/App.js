@@ -1,6 +1,4 @@
 import React, { Component } from 'react'; 
-import { Link } from 'react-router-dom'; 
-
 import AppStore from '../Store/AppStore'; 
 import './App.scss'; 
 
@@ -32,17 +30,6 @@ class App extends Component {
 
     return ( 
       <div className="App">
-        <div className='App-navbar'> 
-          <ul> 
-            <Link id='homePage' to="/">Home</Link>
-            <Link
-              to={{
-                pathname: '/info',
-                search: `?name=${userName}`,
-                state: { ...pageState },
-              }}> Info</Link>
-          </ul>
-        </div> 
       </div> 
     ); 
   }
