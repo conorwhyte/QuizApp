@@ -10,6 +10,9 @@
 /dist
 /.cache
 
+src/aws-exports.js
+.amplifyrc
+
 # misc
 .DS_Store
 .env.local

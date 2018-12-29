@@ -2,14 +2,15 @@
 
 import React, { Component } from 'react';
 import { parse } from 'query-string';
-import './Information.scss'; 
-import 'semantic-ui-css/semantic.min.css';
 
 import Amplify, { API, graphqlOperation } from 'aws-amplify';
 import { GetQuestions } from '../Actions/GetQuestions';
 import { withAuthenticator } from 'aws-amplify-react'; 
 import { Segment, Form, Card, Dimmer, Loader} from 'semantic-ui-react'
 import aws_exports from '../aws-exports'; // specify the location of aws-exports.js file on your project
+
+import './Information.scss'; 
+import 'semantic-ui-css/semantic.min.css';
 
 Amplify.configure(aws_exports);
 
@@ -143,5 +144,4 @@ class Information extends Component {
   }
 }
 
-export default Information;
-// export default withAuthenticator(Information, { includeGreetings: true});
+export default withAuthenticator(Information);

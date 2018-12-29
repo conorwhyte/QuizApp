@@ -62,6 +62,6 @@ class Home extends Component {
   }
 }
 
-export default Home;
-// export default withAuthenticator(Home, { includeGreetings: true});
+// export default Home;
+export default withAuthenticator(Home, { includeGreetings: true});
 
