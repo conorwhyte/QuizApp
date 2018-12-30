@@ -1,0 +1,13 @@
+{
+    "AppSyncApiName": "quizapp",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authQuizApp",
+            "Outputs.UserPoolId"
+        ]
+    },
+    "schemaGraphql": "s3://quizapp-20181229031859-deployment/amplify-appsync-files/schema.graphql.1546200400244",
+    "ResolverBucket": "quizapp-20181229031859-deployment",
+    "ResolverRootKey": "amplify-appsync-files",
+    "DeploymentTimestamp": "1546200400244"
+}

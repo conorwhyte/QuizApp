@@ -19,16 +19,16 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/quizapp-20181229031859-deployment/amplify-cfn-templates/auth/QuizApp-cloudformation-template.yml",
 				"logicalId": "authQuizApp"
 			},
-			"lastPushTimeStamp": "2018-12-29T03:43:05.634Z",
+			"lastPushTimeStamp": "2018-12-30T20:08:15.231Z",
 			"output": {
 				"CreatedSNSRole": "arn:aws:iam::744962777212:role/QuizApp_sns-role",
-				"AppClientSecret": "hgetll2gms38vl1tpks2nsqc5dlkhc63c9e2dbtfkuvegc9pqlk",
-				"UserPoolId": "eu-west-1_4TO5c6Sua",
-				"AppClientIDWeb": "3eg06cueeq5a56lqliqk345n64",
-				"AppClientID": "1veh62kro4go8qnqmovjjspj1q",
-				"UserPoolName": "quizappcea82500_userpool_cea82500"
+				"AppClientSecret": "m9ji9c03uedjneqn2vg6roumu8k05uid783l7hbbslo5adflb1e",
+				"UserPoolId": "eu-west-1_htjZXYtLG",
+				"AppClientIDWeb": "38hk29cl7t496igom1agqj8lj0",
+				"AppClientID": "1b56607g9u3pg2quivh0hpc0r2",
+				"UserPoolName": "quizapp115bf4b2_userpool_115bf4b2"
 			},
-			"lastPushDirHash": "3Zx3dK+IIawPVkcAW84P6jeHxso="
+			"lastPushDirHash": "M1wvdTCzuw2QTWB7iW85WYgtI94="
 		}
 	},
 	"hosting": {
@@ -39,7 +39,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/quizapp-20181229031859-deployment/amplify-cfn-templates/hosting/template.json",
 				"logicalId": "hostingS3AndCloudFront"
 			},
-			"lastPushTimeStamp": "2018-12-29T03:43:05.682Z",
+			"lastPushTimeStamp": "2018-12-30T20:08:15.232Z",
 			"output": {
 				"CloudFrontSecureURL": "https://d2h2qwisil6zq6.cloudfront.net",
 				"S3BucketSecureURL": "https://quizapp-20181229032405-hostingbucket.s3.amazonaws.com",
@@ -50,6 +50,27 @@
 				"CloudFrontDomainName": "d2h2qwisil6zq6.cloudfront.net"
 			},
 			"lastPushDirHash": "ksSadgkm9VE1GJp0GjLu+ZnZEhs="
+		}
+	},
+	"api": {
+		"quizapp": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"securityType": "AMAZON_COGNITO_USER_POOLS",
+				"GraphQLAPIIdOutput": "rr2lrov2rjdsdhxrsk5wu42fka",
+				"GraphQLAPIEndpointOutput": "https://jsktfqbq2bft5bk2vbhpi5rw64.appsync-api.eu-west-1.amazonaws.com/graphql",
+				"GraphQLAPIKeyOutput": "da2-zxdhwvnk3ffvnk5e4i7kwrujae",
+				"AuthCognitoUserPoolIdOutput": "eu-west-1_htjZXYtLG",
+				"AuthCognitoUserPoolNativeClientId": "See UserPool: eu-west-1_htjZXYtLG",
+				"AuthCognitoUserPoolJSClientId": "See UserPool: eu-west-1_htjZXYtLG"
+			},
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/quizapp-20181229031859-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+				"logicalId": "apiquizapp"
+			},
+			"lastPushTimeStamp": "2018-12-30T20:08:15.236Z",
+			"lastPushDirHash": "8gZid3LjT4UMVyNVw1zvgCM2Nzw="
 		}
 	}
 }

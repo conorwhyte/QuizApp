@@ -83,7 +83,7 @@
 			"Properties": {
 				"TemplateURL": "https://s3.amazonaws.com/quizapp-20181229031859-deployment/amplify-cfn-templates/auth/QuizApp-cloudformation-template.yml",
 				"Parameters": {
-					"userPoolName": "quizappcea82500_userpool_cea82500",
+					"userPoolName": "quizapp115bf4b2_userpool_115bf4b2",
 					"autoVerifiedAttributes": "email",
 					"mfaConfiguration": "OPTIONAL",
 					"mfaTypes": "SMS Text Message",
@@ -125,6 +125,25 @@
 			"Properties": {
 				"TemplateURL": "https://s3.amazonaws.com/quizapp-20181229031859-deployment/amplify-cfn-templates/hosting/template.json",
 				"Parameters": {}
+			}
+		},
+		"apiquizapp": {
+			"Type": "AWS::CloudFormation::Stack",
+			"Properties": {
+				"TemplateURL": "https://s3.amazonaws.com/quizapp-20181229031859-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+				"Parameters": {
+					"AppSyncApiName": "quizapp",
+					"AuthCognitoUserPoolId": {
+						"Fn::GetAtt": [
+							"authQuizApp",
+							"Outputs.UserPoolId"
+						]
+					},
+					"schemaGraphql": "s3://quizapp-20181229031859-deployment/amplify-appsync-files/schema.graphql.1546200400244",
+					"ResolverBucket": "quizapp-20181229031859-deployment",
+					"ResolverRootKey": "amplify-appsync-files",
+					"DeploymentTimestamp": "1546200400244"
+				}
 			}
 		}
 	},

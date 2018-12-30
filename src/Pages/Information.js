@@ -8,6 +8,7 @@ import { GetQuestions } from '../Actions/GetQuestions';
 import { withAuthenticator } from 'aws-amplify-react'; 
 import { Segment, Form, Card, Dimmer, Loader} from 'semantic-ui-react'
 import aws_exports from '../aws-exports'; // specify the location of aws-exports.js file on your project
+import { checkQuestions } from '../Actions/CreateQuiz';
 
 import './Information.scss'; 
 import 'semantic-ui-css/semantic.min.css';
@@ -38,7 +39,10 @@ class Information extends Component {
 
   populateQuestions = (jsonResponse) => {
     const { index } = this.state;
-    const results = jsonResponse.results;
+    const { results } = jsonResponse;
+    
+    // checkQuestions(results);
+    
     const question = jsonResponse.results[index].question;
     const answers = jsonResponse.results[index].incorrect_answers;
     answers.push(jsonResponse.results[index].correct_answer)

@@ -6,9 +6,15 @@ import 'semantic-ui-css/semantic.min.css';
 import './Home.scss';
 
 import Amplify, { API, graphqlOperation } from 'aws-amplify';
+import retry from 'async-retry';
+import _ from 'lodash';
+
+import { listAllQuiz } from '../Actions/CreateQuiz';
 import { withAuthenticator } from 'aws-amplify-react'; 
 import { Header, Form, Button, Input, Select} from 'semantic-ui-react'
 import aws_exports from '../aws-exports'; // specify the location of aws-exports.js file on your project
+
+import 'babel-polyfill';
 
 Amplify.configure(aws_exports);
 
@@ -28,7 +34,15 @@ class Home extends Component {
     const user = e.target.value;
     AppActions.changeUser(user);
   }
-  
+
+  componentDidMount() {
+    listAllQuiz(this.listAllQuizCallback);
+  }
+
+  listAllQuizCallback(data) {
+    console.log('DATA', data);
+  }
+   
   render() {
     const genre = [{text: 'General knowledge', value: 'General knowledge'}];
     const pageState = this.state;
@@ -54,7 +68,7 @@ class Home extends Component {
                 search: `?category=${pageState.quizCategory}`,
                 state: { ...pageState },
               }}>
-              <Form.Field control={Button}>Submit</Form.Field>
+              <Form.Field control={Button} onClick={this.createQuiz}>Submit</Form.Field>
             </Link>
         </Form>
       </div>

@@ -1,0 +1,216 @@
+type Question {
+  id: ID!
+  text: String!
+  tags: [String]
+  links: [String]
+  answers(filter: ModelAnswerFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelAnswerConnection
+  version: Int!
+}
+
+type Answer {
+  id: ID!
+  text: String
+  correct: Boolean
+  question: Question
+  version: Int!
+}
+
+type Quiz {
+  id: ID!
+  title: String!
+  questions(filter: ModelQuestionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelQuestionConnection
+  version: Int!
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelQuestionConnection {
+  items: [Question]
+  nextToken: String
+}
+
+input ModelStringFilterInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+}
+
+input ModelIDFilterInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+}
+
+input ModelIntFilterInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  contains: Int
+  notContains: Int
+  between: [Int]
+}
+
+input ModelFloatFilterInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  contains: Float
+  notContains: Float
+  between: [Float]
+}
+
+input ModelBooleanFilterInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelQuestionFilterInput {
+  id: ModelIDFilterInput
+  text: ModelStringFilterInput
+  tags: ModelStringFilterInput
+  links: ModelStringFilterInput
+  and: [ModelQuestionFilterInput]
+  or: [ModelQuestionFilterInput]
+  not: ModelQuestionFilterInput
+}
+
+type Query {
+  getQuestion(id: ID!): Question
+  listQuestions(filter: ModelQuestionFilterInput, limit: Int, nextToken: String): ModelQuestionConnection
+  getAnswer(id: ID!): Answer
+  listAnswers(filter: ModelAnswerFilterInput, limit: Int, nextToken: String): ModelAnswerConnection
+  getQuiz(id: ID!): Quiz
+  listQuizzes(filter: ModelQuizFilterInput, limit: Int, nextToken: String): ModelQuizConnection
+}
+
+input CreateQuestionInput {
+  id: ID
+  text: String!
+  tags: [String]
+  links: [String]
+  quizQuestionsId: ID
+}
+
+input UpdateQuestionInput {
+  id: ID!
+  text: String
+  tags: [String]
+  links: [String]
+  quizQuestionsId: ID
+  expectedVersion: Int!
+}
+
+input DeleteQuestionInput {
+  id: ID
+  expectedVersion: Int!
+}
+
+type Mutation {
+  createQuestion(input: CreateQuestionInput!): Question
+  updateQuestion(input: UpdateQuestionInput!): Question
+  deleteQuestion(input: DeleteQuestionInput!): Question
+  createAnswer(input: CreateAnswerInput!): Answer
+  updateAnswer(input: UpdateAnswerInput!): Answer
+  deleteAnswer(input: DeleteAnswerInput!): Answer
+  createQuiz(input: CreateQuizInput!): Quiz
+  updateQuiz(input: UpdateQuizInput!): Quiz
+  deleteQuiz(input: DeleteQuizInput!): Quiz
+}
+
+type Subscription {
+  onCreateQuestion: Question @aws_subscribe(mutations: ["createQuestion"])
+  onUpdateQuestion: Question @aws_subscribe(mutations: ["updateQuestion"])
+  onDeleteQuestion: Question @aws_subscribe(mutations: ["deleteQuestion"])
+  onCreateAnswer: Answer @aws_subscribe(mutations: ["createAnswer"])
+  onUpdateAnswer: Answer @aws_subscribe(mutations: ["updateAnswer"])
+  onDeleteAnswer: Answer @aws_subscribe(mutations: ["deleteAnswer"])
+  onCreateQuiz: Quiz @aws_subscribe(mutations: ["createQuiz"])
+  onUpdateQuiz: Quiz @aws_subscribe(mutations: ["updateQuiz"])
+  onDeleteQuiz: Quiz @aws_subscribe(mutations: ["deleteQuiz"])
+}
+
+type ModelAnswerConnection {
+  items: [Answer]
+  nextToken: String
+}
+
+input ModelAnswerFilterInput {
+  id: ModelIDFilterInput
+  text: ModelStringFilterInput
+  correct: ModelBooleanFilterInput
+  and: [ModelAnswerFilterInput]
+  or: [ModelAnswerFilterInput]
+  not: ModelAnswerFilterInput
+}
+
+input CreateAnswerInput {
+  id: ID
+  text: String
+  correct: Boolean
+  answerQuestionId: ID
+}
+
+input UpdateAnswerInput {
+  id: ID!
+  text: String
+  correct: Boolean
+  answerQuestionId: ID
+  expectedVersion: Int!
+}
+
+input DeleteAnswerInput {
+  id: ID
+  expectedVersion: Int!
+}
+
+type ModelQuizConnection {
+  items: [Quiz]
+  nextToken: String
+}
+
+input ModelQuizFilterInput {
+  id: ModelIDFilterInput
+  title: ModelStringFilterInput
+  and: [ModelQuizFilterInput]
+  or: [ModelQuizFilterInput]
+  not: ModelQuizFilterInput
+}
+
+input CreateQuizInput {
+  id: ID
+  title: String!
+}
+
+input UpdateQuizInput {
+  id: ID!
+  title: String
+  expectedVersion: Int!
+}
+
+input DeleteQuizInput {
+  id: ID
+  expectedVersion: Int!
+}

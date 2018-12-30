@@ -5,17 +5,17 @@ class AppStore extends EventEmitter {
   constructor() {
     super();
 
-    this.user = 'User'; 
+    this.quizId = ''; 
     this.mobile = window.innerWidth <= 760; 
   }
 
-  changeUser(newUser) {
-    this.user = newUser; 
-    this.emit('changeUser'); 
+  setQuizId(id) {
+    this.quizId = id; 
+    this.emit('setQuizId'); 
   }
 
-  getUser() {
-    return this.user; 
+  getQuizId() {
+    return this.quizId; 
   }
 
   changeMobile(flag) {
@@ -32,8 +32,8 @@ class AppStore extends EventEmitter {
       this.changeMobile(action.text);
       break;
     }
-    case 'CHANGE_USER': {
-      this.changeUser(action.text);
+    case 'SET_QUIZ_ID': {
+      this.setQuizId(action.id);
       break;
     }
     }

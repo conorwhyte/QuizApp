@@ -7,9 +7,9 @@ export function changeMobile(text) {
   }); 
 }
 
-export function changeUser(text) {
+export function setQuizId(id) {
   dispatcher.dispatch({
-    type: 'CHANGE_USER', 
-    text, 
+    type: 'SET_QUIZ_ID', 
+    id, 
   }); 
 }
