@@ -1,0 +1,47 @@
+{
+    "userPoolName": "quizappcea82500_userpool_cea82500",
+    "autoVerifiedAttributes": [
+        "email"
+    ],
+    "mfaConfiguration": "OPTIONAL",
+    "mfaTypes": [
+        "SMS Text Message"
+    ],
+    "roleName": "QuizApp_sns-role",
+    "roleExternalId": "QuizApp_role_external_id",
+    "policyName": "QuizApp-sns-policy",
+    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "Your verification code",
+    "emailVerificationMessage": "Your verification code is {####}",
+    "defaultPasswordPolicy": true,
+    "passwordPolicyMinLength": "6",
+    "passwordPolicyCharacters": [
+        "Requires Lowercase",
+        "Requires Numbers"
+    ],
+    "requiredAttributes": [
+        "email"
+    ],
+    "userpoolClientName": "QuizApp_app_client",
+    "userpoolClientGenerateSecret": true,
+    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientReadAttributes": [
+        "email"
+    ],
+    "mfaLambdaRole": "QuizApp_totp_lambda_role",
+    "mfaLambdaLogPolicy": "QuizApp_totp_lambda_log_policy",
+    "mfaPassRolePolicy": "QuizApp_totp_pass_role_policy",
+    "mfaLambdaIAMPolicy": "QuizApp_totp_lambda_iam_policy",
+    "userpoolClientLambdaRole": "QuizApp_userpoolclient_lambda_role",
+    "userpoolClientLogPolicy": "QuizApp_userpoolclient_lambda_log_policy",
+    "userpoolClientLambdaPolicy": "QuizApp_userpoolclient_lambda_iam_policy",
+    "userpoolClientSetAttributes": false,
+    "useDefault": "manual",
+    "authSelections": "userPoolOnly",
+    "resourceName": "QuizApp",
+    "unAuthRoleName": "quizapp-20181229031859-unauthRole",
+    "authRoleName": "quizapp-20181229031859-authRole",
+    "unAuthRoleArn": "arn:aws:iam::744962777212:role/quizapp-20181229031859-unauthRole",
+    "authRoleArn": "arn:aws:iam::744962777212:role/quizapp-20181229031859-authRole"
+}

@@ -78,18 +78,18 @@
 				}
 			}
 		},
-		"authQuizAppV2": {
+		"authQuizApp": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
-				"TemplateURL": "https://s3.amazonaws.com/quizapp-20181228211700-deployment/amplify-cfn-templates/auth/QuizAppV2-cloudformation-template.yml",
+				"TemplateURL": "https://s3.amazonaws.com/quizapp-20181229031859-deployment/amplify-cfn-templates/auth/QuizApp-cloudformation-template.yml",
 				"Parameters": {
-					"userPoolName": "quizapp0ba328c3_userpool_0ba328c3",
+					"userPoolName": "quizappcea82500_userpool_cea82500",
 					"autoVerifiedAttributes": "email",
 					"mfaConfiguration": "OPTIONAL",
 					"mfaTypes": "SMS Text Message",
-					"roleName": "QuizAppV2_sns-role",
-					"roleExternalId": "QuizAppV2_role_external_id",
-					"policyName": "QuizAppV2-sns-policy",
+					"roleName": "QuizApp_sns-role",
+					"roleExternalId": "QuizApp_role_external_id",
+					"policyName": "QuizApp-sns-policy",
 					"smsAuthenticationMessage": "Your authentication code is {####}",
 					"smsVerificationMessage": "Your verification code is {####}",
 					"emailVerificationSubject": "Your verification code",
@@ -98,32 +98,32 @@
 					"passwordPolicyMinLength": "6",
 					"passwordPolicyCharacters": "Requires Lowercase,Requires Numbers",
 					"requiredAttributes": "email",
-					"userpoolClientName": "QuizAppV2_app_client",
+					"userpoolClientName": "QuizApp_app_client",
 					"userpoolClientGenerateSecret": true,
 					"userpoolClientRefreshTokenValidity": 30,
 					"userpoolClientReadAttributes": "email",
-					"mfaLambdaRole": "QuizAppV2_totp_lambda_role",
-					"mfaLambdaLogPolicy": "QuizAppV2_totp_lambda_log_policy",
-					"mfaPassRolePolicy": "QuizAppV2_totp_pass_role_policy",
-					"mfaLambdaIAMPolicy": "QuizAppV2_totp_lambda_iam_policy",
-					"userpoolClientLambdaRole": "QuizAppV2_userpoolclient_lambda_role",
-					"userpoolClientLogPolicy": "QuizAppV2_userpoolclient_lambda_log_policy",
-					"userpoolClientLambdaPolicy": "QuizAppV2_userpoolclient_lambda_iam_policy",
+					"mfaLambdaRole": "QuizApp_totp_lambda_role",
+					"mfaLambdaLogPolicy": "QuizApp_totp_lambda_log_policy",
+					"mfaPassRolePolicy": "QuizApp_totp_pass_role_policy",
+					"mfaLambdaIAMPolicy": "QuizApp_totp_lambda_iam_policy",
+					"userpoolClientLambdaRole": "QuizApp_userpoolclient_lambda_role",
+					"userpoolClientLogPolicy": "QuizApp_userpoolclient_lambda_log_policy",
+					"userpoolClientLambdaPolicy": "QuizApp_userpoolclient_lambda_iam_policy",
 					"userpoolClientSetAttributes": false,
 					"useDefault": "manual",
 					"authSelections": "userPoolOnly",
-					"resourceName": "QuizAppV2",
-					"unAuthRoleName": "quizapp-20181228211700-unauthRole",
-					"authRoleName": "quizapp-20181228211700-authRole",
-					"unAuthRoleArn": "arn:aws:iam::744962777212:role/quizapp-20181228211700-unauthRole",
-					"authRoleArn": "arn:aws:iam::744962777212:role/quizapp-20181228211700-authRole"
+					"resourceName": "QuizApp",
+					"unAuthRoleName": "quizapp-20181229031859-unauthRole",
+					"authRoleName": "quizapp-20181229031859-authRole",
+					"unAuthRoleArn": "arn:aws:iam::744962777212:role/quizapp-20181229031859-unauthRole",
+					"authRoleArn": "arn:aws:iam::744962777212:role/quizapp-20181229031859-authRole"
 				}
 			}
 		},
 		"hostingS3AndCloudFront": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
-				"TemplateURL": "https://s3.amazonaws.com/quizapp-20181228211700-deployment/amplify-cfn-templates/hosting/template.json",
+				"TemplateURL": "https://s3.amazonaws.com/quizapp-20181229031859-deployment/amplify-cfn-templates/hosting/template.json",
 				"Parameters": {}
 			}
 		}

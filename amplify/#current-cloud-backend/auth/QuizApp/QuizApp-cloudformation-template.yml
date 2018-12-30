@@ -176,7 +176,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: QuizAppV2_app_clientWeb
+      ClientName: QuizApp_app_clientWeb
       
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
       UserPoolId: !Ref UserPool
@@ -318,7 +318,7 @@ Resources:
             - Effect: Allow
               Action:
                 - 'iam:PassRole'
-              Resource: arn:aws:iam:::role/QuizAppV2_totp_lambda_role
+              Resource: arn:aws:iam:::role/QuizApp_totp_lambda_role
   MFALambda:
   # Lambda which sets MFA config values
   # Depends on MFALambdaRole for role ARN

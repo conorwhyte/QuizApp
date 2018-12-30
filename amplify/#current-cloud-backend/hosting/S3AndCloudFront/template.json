@@ -6,7 +6,7 @@
             "Type": "AWS::S3::Bucket",
             "DeletionPolicy": "Retain",
             "Properties": {
-                "BucketName": "quizapp-20181228212757-hostingbucket",
+                "BucketName": "quizapp-20181229032405-hostingbucket",
                 "WebsiteConfiguration": {
                     "IndexDocument": "index.html",
                     "ErrorDocument": "index.html"
