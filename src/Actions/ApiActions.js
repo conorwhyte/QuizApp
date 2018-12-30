@@ -54,7 +54,7 @@ query ListQuestion {
 
 export const ListQuizzes = `
 query MyQuizzes {
-    listQuizzes(limit: 5) {
+    listQuizzes(limit: 25) {
         nextToken
         items {
             id
