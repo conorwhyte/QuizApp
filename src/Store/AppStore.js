@@ -5,7 +5,7 @@ class AppStore extends EventEmitter {
   constructor() {
     super();
 
-    this.quizId = ''; 
+    this.quizId = {id: '', title: ''}; 
     this.mobile = window.innerWidth <= 760; 
   }
 

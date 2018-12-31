@@ -6,12 +6,13 @@ import 'semantic-ui-css/semantic.min.css';
 import './Home.scss';
 
 import QuizIcon from '../Assets/quizIcon.png';
+import { quizGenres, quizDifficulties } from '../Assets/types';
 
 import Amplify, { API, graphqlOperation } from 'aws-amplify';
 import retry from 'async-retry';
 import _ from 'lodash';
 
-import { listAllQuiz } from '../Actions/CreateQuiz';
+import { listAllQuiz, countQuizWithGenre } from '../Actions/CreateQuiz';
 import { withAuthenticator } from 'aws-amplify-react'; 
 import { Header, Button, Image, Input, Select, Divider, Dropdown, Form, Grid, Segment } from 'semantic-ui-react'
 import aws_exports from '../aws-exports'; // specify the location of aws-exports.js file on your project
@@ -47,11 +48,31 @@ class Home extends Component {
     const quizItems = allQuizzes.map((item) => {
       return {text: item.title, value: item.title};
     });
+
     this.setState({quizItems})
+  }
+
+  changeGenre = (event, data) => {
+    const { quizItems } = this.state;
+    const genreTitle = quizGenres.filter((quiz) => {
+      if (quiz.value === data.value) {
+        return quiz.text;
+      }
+    });
+    const { text } = genreTitle[0]
+    const numberOfQuizzes = countQuizWithGenre(text, quizItems);
+    this.setState({ quizCategory: data.value, numberOfQuizzes, quizCategoryTitle: text });
+  }
+
+  changeDifficulty = (event, data) => {
+    this.setState({ quizDifficulty: data.value });
+  }
+  
+  changeNumOfQuestions = (event, data) => {
+    this.setState({ numQuestions: data.value });
   }
    
   render() {
-    const genre = [{text: 'General knowledge', value: 'General knowledge'}];
     const pageState = this.state;
     const { quizItems } = this.state;
     return (
@@ -67,15 +88,15 @@ class Home extends Component {
               <div className='Home-body-section'>
                 <br />
                 <label>Number of questions:</label>
-                <Input fluid placeholder='10' />
+                <Input onChange={this.changeNumOfQuestions} fluid placeholder='10' />
 
                 <br />
                 <label>Choose a genre: </label>
-                <Dropdown placeholder='Quiz1' fluid search selection options={genre} />
+                <Dropdown onChange={this.changeGenre} placeholder='General Knowledge' fluid search selection options={quizGenres} />
                 
                 <br />
                 <label>Choose a difficulty: </label>
-                <Dropdown placeholder='Quiz1' fluid search selection options={genre} />
+                <Dropdown onChange={this.changeDifficulty} placeholder='Medium' fluid search selection options={quizDifficulties} />
 
                 <br />
                 <br />
@@ -114,6 +135,5 @@ class Home extends Component {
   }
 }
 
-// export default Home;
 export default withAuthenticator(Home, { includeGreetings: true});
 

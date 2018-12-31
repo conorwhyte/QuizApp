@@ -62,3 +62,20 @@ query MyQuizzes {
         }
     }
 }`;
+
+export const ListQuizQuestions = `
+query MyQuestions ($quizID: ID!){
+    getQuiz(id: $quizID) {
+        questions (limit: 50) {
+            items {
+                id
+                tags
+                text
+                links
+                answers {
+                    items { id text correct }
+                }
+            }
+        }
+    }
+}`;

@@ -6,9 +6,10 @@ import { parse } from 'query-string';
 import Amplify, { API, graphqlOperation } from 'aws-amplify';
 import { GetQuestions } from '../Actions/GetQuestions';
 import { withAuthenticator } from 'aws-amplify-react'; 
-import { Segment, Form, Card, Dimmer, Loader} from 'semantic-ui-react'
+import { Segment, Form, Card, Dimmer, Loader, Progress } from 'semantic-ui-react'
 import aws_exports from '../aws-exports'; // specify the location of aws-exports.js file on your project
-import { checkQuestions } from '../Actions/CreateQuiz';
+import { checkQuestions, createNewQuiz, listQuizQuestions } from '../Actions/CreateQuiz';
+import AppStore from '../Store/AppStore';
 
 import './Information.scss'; 
 import 'semantic-ui-css/semantic.min.css';
@@ -37,20 +38,39 @@ class Information extends Component {
     GetQuestions(quizCategory, numQuestions, quizDifficulty, quizType, this.populateQuestions);
   }
 
-  populateQuestions = (jsonResponse) => {
-    const { index } = this.state;
+   populateQuestions = async (jsonResponse) => {
     const { results } = jsonResponse;
+    const { location } = this.props;
+    const {quizCategoryTitle, quizDifficulty, numberOfQuizzes } = location.state;
+
+    createNewQuiz(quizCategoryTitle, numberOfQuizzes, quizDifficulty, results);
     
-    // checkQuestions(results);
-    
-    const question = jsonResponse.results[index].question;
-    const answers = jsonResponse.results[index].incorrect_answers;
-    answers.push(jsonResponse.results[index].correct_answer)
-    this.setState(prevState => ({
+    const quizId = AppStore.getQuizId().id;
+    setTimeout(() => { //Start the timer
+      listQuizQuestions(quizId, this.setQuestions);
+    }, 1000)
+  }
+
+  setQuestions = (data) => {
+    data = data.getQuiz.questions.items;
+    console.log('DATA', data);
+    const results = data.map((item) => {
+      const answers = item.answers.items;
+      return {
+        question: item.text,
+        answers: answers.map((answer) => {
+          return answer.text;
+        }), 
+      }
+    });
+
+    const question = results[0].question;
+    const answers = results[0].answers;
+    this.setState({
       results,
       question, 
       answers,
-    }));
+    });
   }
 
   checkAnswer = (data) => {
@@ -112,6 +132,7 @@ class Information extends Component {
   render() {
     const { question, answers, index } = this.state; 
     const decodeQuestion = this.decodeHTML(question);
+    const progressPercent = (index) * 10;
 
     return (
       <div className="Quiz-body">
@@ -121,7 +142,7 @@ class Information extends Component {
           </Dimmer> 
         }
         <header> 
-          {`${index+1}/10`}
+          <Progress percent={progressPercent} progress />
           <br />
           <br />
         </header>
