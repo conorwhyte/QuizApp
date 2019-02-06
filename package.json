@@ -10,7 +10,7 @@
     "test": "jest --watch",
     "clean": "rm -rf node_modules dist yarn.lock .cache && yarn",
     "puppet": "node tests/smokeTest.js",
-    "prettier": "prettier",
+    "prettier": "prettier --check \"src/**/*.{js,jsx}\" --write",
     "deploy": "yarn build && aws s3 cp ./dist s3://$BUCKET --recursive --acl public-read-write"
   },
   "keywords": [
