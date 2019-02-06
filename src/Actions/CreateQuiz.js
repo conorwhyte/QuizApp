@@ -41,7 +41,7 @@ export async function checkQuestions(pulledQuestions) {
     const arrayOfQuestions = data.listQuestions.items;
     const quiz = AppStore.getQuizId();
     
-    pulledQuestions.forEach((currentPulledQuestion) => {
+    pulledQuestions.forEach((currentPulledQuestion, index) => {
         let addQuestionToQuiz = true;
         arrayOfQuestions.forEach((question) => {
             if (currentPulledQuestion.question === question.text) {
@@ -49,7 +49,7 @@ export async function checkQuestions(pulledQuestions) {
                 return;
             } 
         });
-
+     
         if (addQuestionToQuiz) {
             const quizParameters = {
                 quizId: quiz.id,
@@ -61,12 +61,12 @@ export async function checkQuestions(pulledQuestions) {
                 answerText4: currentPulledQuestion.incorrect_answers[2],
                 correctAnswer: currentPulledQuestion.correct_answer,
             };
-
             submitNewQuestion(quizParameters);
         }
     });
 }
 
+let countForAnswers = 0; 
 async function submitNewQuestion(input) {
     const quizId = AppStore.getQuizId().id;
     const newQ = await GqlRetry(QNewQuestion, {
@@ -76,9 +76,9 @@ async function submitNewQuestion(input) {
     _.map(
         [input.answerText1, input.answerText2, input.answerText3, input.answerText4],
         (ans, idx) => {
-            console.log(ans);
             if (ans === null) return
-            // console.log('CONR', input.correctAnswer);
+            console.log('CONR', countForAnswers);
+            countForAnswers += 1;
             GqlRetry(QNewAnswer, {
                 questionId: newQ.data.createQuestion.id,
                 text: ans,

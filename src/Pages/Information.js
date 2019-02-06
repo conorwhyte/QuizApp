@@ -43,12 +43,12 @@ class Information extends Component {
     const { location } = this.props;
     const {quizCategoryTitle, quizDifficulty, numberOfQuizzes } = location.state;
 
-    createNewQuiz(quizCategoryTitle, numberOfQuizzes, quizDifficulty, results);
+    // createNewQuiz(quizCategoryTitle, numberOfQuizzes, quizDifficulty, results);
     
     const quizId = AppStore.getQuizId().id;
     setTimeout(() => { //Start the timer
       listQuizQuestions(quizId, this.setQuestions);
-    }, 1000)
+    }, 2000)
   }
 
   setQuestions = (data) => {
