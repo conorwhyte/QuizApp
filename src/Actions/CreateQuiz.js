@@ -91,7 +91,6 @@ async function submitNewQuestion(input) {
     ],
     (ans, idx) => {
       if (ans === null) return;
-      console.log('CONR', countForAnswers);
       countForAnswers += 1;
       GqlRetry(QNewAnswer, {
         questionId: newQ.data.createQuestion.id,

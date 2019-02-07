@@ -1,33 +1,18 @@
 import React, { Component } from 'react';
 import * as AppActions from '../Actions/AppActions';
-import { Link } from 'react-router-dom';
+import { quizGenres } from '../Assets/types';
+import QuizSelectors from '../Components/QuizSelectors';
+import ExistingQuiz from '../Components/ExistingQuiz';
+import QuizHeader from '../Components/Header';
+import Amplify from 'aws-amplify';
+import _ from 'lodash';
+import { listAllQuiz, countQuizWithGenre } from '../Actions/CreateQuiz';
+import { withAuthenticator } from 'aws-amplify-react';
+import { Divider, Segment } from 'semantic-ui-react';
+import aws_exports from '../aws-exports'; // specify the location of aws-exports.js file on your project
 
 import 'semantic-ui-css/semantic.min.css';
 import './Home.scss';
-
-import QuizIcon from '../Assets/quizIcon.png';
-import { quizGenres, quizDifficulties } from '../Assets/types';
-
-import Amplify, { API, graphqlOperation } from 'aws-amplify';
-import retry from 'async-retry';
-import _ from 'lodash';
-
-import { listAllQuiz, countQuizWithGenre } from '../Actions/CreateQuiz';
-import { withAuthenticator } from 'aws-amplify-react';
-import {
-  Header,
-  Button,
-  Image,
-  Input,
-  Select,
-  Divider,
-  Dropdown,
-  Form,
-  Grid,
-  Segment,
-} from 'semantic-ui-react';
-import aws_exports from '../aws-exports'; // specify the location of aws-exports.js file on your project
-
 import 'babel-polyfill';
 
 Amplify.configure(aws_exports);
@@ -92,93 +77,20 @@ class Home extends Component {
     const { quizItems } = this.state;
     return (
       <div className="Home-body">
-        <Header as="h2" icon textAlign="center">
-          <Image src={QuizIcon} />
-          <br />
-          Trivia zone
-          <Header.Subheader>
-            Choose a genre, a difficulty to generate a quiz. Or choose a
-            pre-generated quiz.
-          </Header.Subheader>
-        </Header>
+        <QuizHeader />
         <br />
         <Segment placeholder textAlign="center">
-          <div className="Home-body-section">
-            <br />
-            <label>Number of questions:</label>
-            <Input
-              onChange={this.changeNumOfQuestions}
-              fluid
-              placeholder="10"
-            />
-
-            <br />
-            <label>Choose a genre: </label>
-            <Dropdown
-              onChange={this.changeGenre}
-              placeholder="General Knowledge"
-              fluid
-              search
-              selection
-              options={quizGenres}
-            />
-
-            <br />
-            <label>Choose a difficulty: </label>
-            <Dropdown
-              onChange={this.changeDifficulty}
-              placeholder="Medium"
-              fluid
-              search
-              selection
-              options={quizDifficulties}
-            />
-
-            <br />
-            <br />
-            <Link
-              to={{
-                pathname: '/quiz',
-                search: `?category=${pageState.quizCategory}`,
-                state: { ...pageState },
-              }}
-            >
-              <Button onClick={this.createQuiz} primary>
-                {' '}
-                Generate Quiz{' '}
-              </Button>
-            </Link>
-            <br />
-            <br />
-          </div>
+          <QuizSelectors
+            createQuiz={this.createQuiz}
+            changeNumOfQuestions={this.changeNumOfQuestions}
+            pageState={pageState}
+          />
           <Divider horizontal>Or choose an existing quiz</Divider>
-          <div className="Home-body-section">
-            <br />
-            <label>Already created quizzes: </label>
-            <Dropdown
-              placeholder="Quiz1"
-              fluid
-              search
-              selection
-              options={quizItems}
-            />
-
-            <br />
-            <br />
-            <Link
-              to={{
-                pathname: '/quiz',
-                search: `?category=${pageState.quizCategory}`,
-                state: { ...pageState },
-              }}
-            >
-              <Button onClick={this.createQuiz} primary>
-                {' '}
-                Start Quiz{' '}
-              </Button>
-            </Link>
-            <br />
-          </div>
+          <ExistingQuiz
+            pageState={pageState}
+            quizItems={quizItems}
+            createQuiz={this.createQuiz}
+          />
         </Segment>
       </div>
     );

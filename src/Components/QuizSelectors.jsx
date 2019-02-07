@@ -1,17 +1,20 @@
 import React from 'react';
 import { Button, Input, Dropdown } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { quizGenres, quizDifficulties } from '../Assets/types';
 
-function QuizSelectors() {
+function QuizSelectors(props) {
+  const { pageState } = props;
   return (
     <div className="Home-body-section">
       <br />
       <label>Number of questions:</label>
-      <Input onChange={this.changeNumOfQuestions} fluid placeholder="10" />
+      <Input onChange={props.changeNumOfQuestions} fluid placeholder="10" />
 
       <br />
       <label>Choose a genre: </label>
       <Dropdown
-        onChange={this.changeGenre}
+        onChange={props.changeGenre}
         placeholder="General Knowledge"
         fluid
         search
@@ -22,7 +25,7 @@ function QuizSelectors() {
       <br />
       <label>Choose a difficulty: </label>
       <Dropdown
-        onChange={this.changeDifficulty}
+        onChange={props.changeDifficulty}
         placeholder="Medium"
         fluid
         search
@@ -39,7 +42,7 @@ function QuizSelectors() {
           state: { ...pageState },
         }}
       >
-        <Button onClick={this.createQuiz} primary>
+        <Button onClick={props.createQuiz} primary>
           {' '}
           Generate Quiz{' '}
         </Button>

@@ -4,14 +4,8 @@ import { parse } from 'query-string';
 import Amplify, { API, graphqlOperation } from 'aws-amplify';
 import { GetQuestions } from '../Actions/GetQuestions';
 import { withAuthenticator } from 'aws-amplify-react';
-import {
-  Segment,
-  Form,
-  Card,
-  Dimmer,
-  Loader,
-  Progress,
-} from 'semantic-ui-react';
+import QuizProgress from '../Components/QuizProgress';
+import { Segment, Form, Card, Dimmer, Loader } from 'semantic-ui-react';
 import aws_exports from '../aws-exports'; // specify the location of aws-exports.js file on your project
 import {
   checkQuestions,
@@ -61,18 +55,19 @@ class Information extends Component {
       numberOfQuizzes,
     } = location.state;
 
+    console.log('RESULTS: ', results);
+
     // createNewQuiz(quizCategoryTitle, numberOfQuizzes, quizDifficulty, results);
 
-    const quizId = AppStore.getQuizId().id;
-    setTimeout(() => {
-      //Start the timer
-      listQuizQuestions(quizId, this.setQuestions);
-    }, 2000);
+    // const quizId = AppStore.getQuizId().id;
+    // setTimeout(() => {
+    //   //Start the timer
+    //   listQuizQuestions(quizId, this.setQuestions);
+    // }, 2000);
   };
 
   setQuestions = data => {
     data = data.getQuiz.questions.items;
-    console.log('DATA', data);
     const results = data.map(item => {
       const answers = item.answers.items;
       return {
@@ -166,11 +161,7 @@ class Information extends Component {
             <Loader indeterminate>Preparing Quiz</Loader>
           </Dimmer>
         )}
-        <header>
-          <Progress percent={progressPercent} progress />
-          <br />
-          <br />
-        </header>
+        <QuizProgress progressPercent={progressPercent} />
         <Form>
           <Form.Group grouped>
             <Segment size={'big'} className="inverted aligned">
