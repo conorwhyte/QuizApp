@@ -43,6 +43,11 @@ export async function createNewQuiz(genre, number, difficulty, results) {
   await checkQuestions(results)
 }
 
+export async function listQuestions() {
+  const { data } = await API.graphql(graphqlOperation(ListQuestions))
+  return data.listQuestions.items
+}
+
 export async function checkQuestions(pulledQuestions) {
   const { data } = await API.graphql(graphqlOperation(ListQuestions))
   const arrayOfQuestions = data.listQuestions.items

@@ -5,7 +5,7 @@ import ExistingQuiz from '../Components/ExistingQuiz'
 import QuizHeader from '../Components/Header'
 import { GetQuestions } from '../Actions/GetQuestions'
 import Amplify from 'aws-amplify'
-import { listAllQuiz, countQuizWithGenre } from '../Actions/CreateQuiz'
+import { listAllQuiz, countQuizWithGenre, listQuestions } from '../Actions/CreateQuiz'
 import { withAuthenticator } from 'aws-amplify-react'
 import { Divider, Segment } from 'semantic-ui-react'
 import aws_exports from '../aws-exports' // specify the location of aws-exports.js file on your project
@@ -93,10 +93,11 @@ class Home extends Component {
         incorrect_answers: value.incorrect_answers,
       })
     })
+
+    // listQuestions().then(data => console.log('DC', data))
   }
 
   pullDownQuestions = () => {
-    console.log('CONOR')
     const { quizCategory, numQuestions, quizDifficulty, quizType } = this.state
     GetQuestions(
       quizCategory,
@@ -137,4 +138,5 @@ class Home extends Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withAuthenticator(Home, { includeGreetings: true }))
+)(Home)
+// )(withAuthenticator(Home, { includeGreetings: true }))
