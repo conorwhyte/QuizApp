@@ -1,6 +1,6 @@
-import React from 'react';
-import { Image, Header } from 'semantic-ui-react';
-import QuizIcon from '../Assets/quizIcon.png';
+import React from 'react'
+import { Image, Header } from 'semantic-ui-react'
+import QuizIcon from '../Assets/quizIcon.png'
 
 function QuizHeader() {
   return (
@@ -13,7 +13,7 @@ function QuizHeader() {
         pre-generated quiz.
       </Header.Subheader>
     </Header>
-  );
+  )
 }
 
-export default QuizHeader;
+export default QuizHeader

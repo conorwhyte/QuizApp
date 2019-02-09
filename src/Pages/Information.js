@@ -1,27 +1,26 @@
-import React, { Component } from 'react';
-import { parse } from 'query-string';
+import React, { Component } from 'react'
+import { parse } from 'query-string'
 
-import Amplify, { API, graphqlOperation } from 'aws-amplify';
-import { GetQuestions } from '../Actions/GetQuestions';
-import { withAuthenticator } from 'aws-amplify-react';
-import QuizProgress from '../Components/QuizProgress';
-import { Segment, Form, Card, Dimmer, Loader } from 'semantic-ui-react';
-import aws_exports from '../aws-exports'; // specify the location of aws-exports.js file on your project
+import Amplify, { API, graphqlOperation } from 'aws-amplify'
+import { GetQuestions } from '../Actions/GetQuestions'
+import { withAuthenticator } from 'aws-amplify-react'
+import QuizProgress from '../Components/QuizProgress'
+import { Segment, Form, Card, Dimmer, Loader } from 'semantic-ui-react'
+import aws_exports from '../aws-exports' // specify the location of aws-exports.js file on your project
 import {
   checkQuestions,
   createNewQuiz,
   listQuizQuestions,
-} from '../Actions/CreateQuiz';
-import AppStore from '../Store/AppStore';
+} from '../Actions/CreateQuiz'
 
-import './Information.scss';
-import 'semantic-ui-css/semantic.min.css';
+import './Information.scss'
+import 'semantic-ui-css/semantic.min.css'
 
-Amplify.configure(aws_exports);
+Amplify.configure(aws_exports)
 
 class Information extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       question: 'test',
@@ -29,13 +28,13 @@ class Information extends Component {
       index: 0,
       showAlert: false,
       numberOfQuestionsCorrect: 0,
-    };
+    }
   }
 
   componentDidMount() {
-    const { location } = this.props;
-    const quizCategory = parse(location.search).category;
-    const { numQuestions, quizDifficulty, quizType } = location.state;
+    const { location } = this.props
+    const quizCategory = parse(location.search).category
+    const { numQuestions, quizDifficulty, quizType } = location.state
 
     GetQuestions(
       quizCategory,
@@ -43,19 +42,19 @@ class Information extends Component {
       quizDifficulty,
       quizType,
       this.populateQuestions
-    );
+    )
   }
 
   populateQuestions = async jsonResponse => {
-    const { results } = jsonResponse;
-    const { location } = this.props;
+    const { results } = jsonResponse
+    const { location } = this.props
     const {
       quizCategoryTitle,
       quizDifficulty,
       numberOfQuizzes,
-    } = location.state;
+    } = location.state
 
-    console.log('RESULTS: ', results);
+    console.log('RESULTS: ', results)
 
     // createNewQuiz(quizCategoryTitle, numberOfQuizzes, quizDifficulty, results);
 
@@ -64,43 +63,43 @@ class Information extends Component {
     //   //Start the timer
     //   listQuizQuestions(quizId, this.setQuestions);
     // }, 2000);
-  };
+  }
 
   setQuestions = data => {
-    data = data.getQuiz.questions.items;
+    data = data.getQuiz.questions.items
     const results = data.map(item => {
-      const answers = item.answers.items;
+      const answers = item.answers.items
       return {
         question: item.text,
         answers: answers.map(answer => {
-          return answer.text;
+          return answer.text
         }),
-      };
-    });
+      }
+    })
 
-    const question = results[0].question;
-    const answers = results[0].answers;
+    const question = results[0].question
+    const answers = results[0].answers
     this.setState({
       results,
       question,
       answers,
-    });
-  };
+    })
+  }
 
   checkAnswer = data => {
-    const { results, index } = this.state;
-    const chosenAnswer = data.header;
-    const { correct_answer } = results[index];
-    return correct_answer === chosenAnswer;
-  };
+    const { results, index } = this.state
+    const chosenAnswer = data.header
+    const { correct_answer } = results[index]
+    return correct_answer === chosenAnswer
+  }
 
   showFinishedRound = () => {
-    const { numberOfQuestionsCorrect } = this.state;
-    alert(`${numberOfQuestionsCorrect}/10`);
-  };
+    const { numberOfQuestionsCorrect } = this.state
+    alert(`${numberOfQuestionsCorrect}/10`)
+  }
 
   submitAndPopulate = (event, data) => {
-    const isCorrect = this.checkAnswer(data);
+    const isCorrect = this.checkAnswer(data)
 
     this.setState(prevState => ({
       showAlert: true,
@@ -109,50 +108,50 @@ class Information extends Component {
       numberOfQuestionsCorrect: isCorrect
         ? prevState.numberOfQuestionsCorrect + 1
         : prevState.numberOfQuestionsCorrect,
-    }));
+    }))
 
     setTimeout(() => {
       //Start the timer
       // Move onto the next question
-      const { results, index } = this.state;
+      const { results, index } = this.state
       if (index <= 9) {
-        const question = results[index].question;
-        const answers = results[index].incorrect_answers;
-        answers.push(results[index].correct_answer);
+        const question = results[index].question
+        const answers = results[index].incorrect_answers
+        answers.push(results[index].correct_answer)
         this.setState(prevState => ({
           question,
           answers,
           showAlert: false,
-        }));
+        }))
       } else {
-        this.showFinishedRound();
+        this.showFinishedRound()
       }
-    }, 1500);
-  };
+    }, 1500)
+  }
 
   decodeHTML = html => {
-    const txt = document.createElement('textarea');
-    txt.innerHTML = html;
-    return txt.value;
-  };
+    const txt = document.createElement('textarea')
+    txt.innerHTML = html
+    return txt.value
+  }
 
   showAlert = () => {
-    const { isCorrect, results, index } = this.state;
+    const { isCorrect, results, index } = this.state
     const alertText = isCorrect
       ? 'CORRECT'
-      : `Incorrect! The right answer is ${results[index - 1].correct_answer}`;
+      : `Incorrect! The right answer is ${results[index - 1].correct_answer}`
     return (
       <Segment inverted color={isCorrect ? 'green' : 'red'}>
         {' '}
         {alertText}{' '}
       </Segment>
-    );
-  };
+    )
+  }
 
   render() {
-    const { question, answers, index } = this.state;
-    const decodeQuestion = this.decodeHTML(question);
-    const progressPercent = index * 10;
+    const { question, answers, index } = this.state
+    const decodeQuestion = this.decodeHTML(question)
+    const progressPercent = index * 10
 
     return (
       <div className="Quiz-body">
@@ -182,8 +181,8 @@ class Information extends Component {
           {this.state.showAlert && this.showAlert()}
         </Form>
       </div>
-    );
+    )
   }
 }
 
-export default withAuthenticator(Information);
+export default withAuthenticator(Information)

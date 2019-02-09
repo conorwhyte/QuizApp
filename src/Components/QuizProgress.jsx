@@ -1,5 +1,5 @@
-import React from 'react';
-import { Progress } from 'semantic-ui-react';
+import React from 'react'
+import { Progress } from 'semantic-ui-react'
 
 function QuizProgress(props) {
   return (
@@ -8,7 +8,7 @@ function QuizProgress(props) {
       <br />
       <br />
     </header>
-  );
+  )
 }
 
-export default QuizProgress;
+export default QuizProgress

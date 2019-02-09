@@ -1,9 +1,9 @@
-import React from 'react';
-import { Button, Dropdown } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Button, Dropdown } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 function QuizSelectors(props) {
-  const { pageState, quizItems } = props;
+  const { pageState, quizItems } = props
   return (
     <div className="Home-body-section">
       <br />
@@ -32,7 +32,7 @@ function QuizSelectors(props) {
       </Link>
       <br />
     </div>
-  );
+  )
 }
 
-export default QuizSelectors;
+export default QuizSelectors

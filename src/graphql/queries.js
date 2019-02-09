@@ -19,7 +19,7 @@ export const getQuestion = `query GetQuestion($id: ID!) {
     version
   }
 }
-`;
+`
 export const listQuestions = `query ListQuestions(
   $filter: ModelQuestionFilterInput
   $limit: Int
@@ -39,7 +39,7 @@ export const listQuestions = `query ListQuestions(
     nextToken
   }
 }
-`;
+`
 export const getAnswer = `query GetAnswer($id: ID!) {
   getAnswer(id: $id) {
     id
@@ -58,7 +58,7 @@ export const getAnswer = `query GetAnswer($id: ID!) {
     version
   }
 }
-`;
+`
 export const listAnswers = `query ListAnswers(
   $filter: ModelAnswerFilterInput
   $limit: Int
@@ -81,7 +81,7 @@ export const listAnswers = `query ListAnswers(
     nextToken
   }
 }
-`;
+`
 export const getQuiz = `query GetQuiz($id: ID!) {
   getQuiz(id: $id) {
     id
@@ -99,7 +99,7 @@ export const getQuiz = `query GetQuiz($id: ID!) {
     version
   }
 }
-`;
+`
 export const listQuizzes = `query ListQuizzes(
   $filter: ModelQuizFilterInput
   $limit: Int
@@ -117,4 +117,4 @@ export const listQuizzes = `query ListQuizzes(
     nextToken
   }
 }
-`;
+`

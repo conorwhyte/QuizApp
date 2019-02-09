@@ -1,25 +1,38 @@
-import React, { Component } from 'react';
-import * as AppActions from '../Actions/AppActions';
-import { quizGenres } from '../Assets/types';
-import QuizSelectors from '../Components/QuizSelectors';
-import ExistingQuiz from '../Components/ExistingQuiz';
-import QuizHeader from '../Components/Header';
-import Amplify from 'aws-amplify';
-import _ from 'lodash';
-import { listAllQuiz, countQuizWithGenre } from '../Actions/CreateQuiz';
-import { withAuthenticator } from 'aws-amplify-react';
-import { Divider, Segment } from 'semantic-ui-react';
-import aws_exports from '../aws-exports'; // specify the location of aws-exports.js file on your project
+import React, { Component } from 'react'
+import { quizGenres } from '../Assets/types'
+import QuizSelectors from '../Components/QuizSelectors'
+import ExistingQuiz from '../Components/ExistingQuiz'
+import QuizHeader from '../Components/Header'
+import { GetQuestions } from '../Actions/GetQuestions'
+import Amplify from 'aws-amplify'
+import { listAllQuiz, countQuizWithGenre } from '../Actions/CreateQuiz'
+import { withAuthenticator } from 'aws-amplify-react'
+import { Divider, Segment } from 'semantic-ui-react'
+import aws_exports from '../aws-exports' // specify the location of aws-exports.js file on your project
+import { addQuestion } from '../Actions/question.action'
+import { connect, dispatch } from 'react-redux'
 
-import 'semantic-ui-css/semantic.min.css';
-import './Home.scss';
-import 'babel-polyfill';
+import 'semantic-ui-css/semantic.min.css'
+import './Home.scss'
+import 'babel-polyfill'
 
-Amplify.configure(aws_exports);
+Amplify.configure(aws_exports)
+
+const mapStateToProps = state => ({
+  quiz: state,
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addQuestionToQuiz: question => {
+      dispatch(addQuestion(question))
+    },
+  }
+}
 
 class Home extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props)
 
     this.state = {
       numQuestions: 10,
@@ -27,61 +40,85 @@ class Home extends Component {
       quizDifficulty: 'medium',
       quizType: 'multiple',
       quizItems: [],
-    };
+    }
   }
 
   handleChange(e) {
-    const user = e.target.value;
-    AppActions.changeUser(user);
+    const user = e.target.value
   }
 
-  componentDidMount() {
-    listAllQuiz(this.listAllQuizCallback);
-  }
+  // componentDidMount() {
+  //   listAllQuiz(this.listAllQuizCallback);
+  // }
 
   listAllQuizCallback = data => {
-    const allQuizzes = data.listQuizzes.items;
+    const allQuizzes = data.listQuizzes.items
     const quizItems = allQuizzes.map(item => {
-      return { text: item.title, value: item.title };
-    });
+      return { text: item.title, value: item.title }
+    })
 
-    this.setState({ quizItems });
-  };
+    this.setState({ quizItems })
+  }
 
   changeGenre = (event, data) => {
-    const { quizItems } = this.state;
+    const { quizItems } = this.state
     const genreTitle = quizGenres.filter(quiz => {
       if (quiz.value === data.value) {
-        return quiz.text;
+        return quiz.text
       }
-    });
-    const { text } = genreTitle[0];
-    const numberOfQuizzes = countQuizWithGenre(text, quizItems);
+    })
+    const { text } = genreTitle[0]
+    const numberOfQuizzes = countQuizWithGenre(text, quizItems)
     this.setState({
       quizCategory: data.value,
       numberOfQuizzes,
       quizCategoryTitle: text,
-    });
-  };
+    })
+  }
 
   changeDifficulty = (event, data) => {
-    this.setState({ quizDifficulty: data.value });
-  };
+    this.setState({ quizDifficulty: data.value })
+  }
 
   changeNumOfQuestions = (event, data) => {
-    this.setState({ numQuestions: data.value });
-  };
+    this.setState({ numQuestions: data.value })
+  }
+
+  addItemToStore = questions => {
+    const { addQuestionToQuiz } = this.props
+    questions.results.forEach(value => {
+      addQuestionToQuiz({
+        question: value.question,
+        correct_answer: value.correct_answer,
+        incorrect_answers: value.incorrect_answers,
+      })
+    })
+  }
+
+  pullDownQuestions = () => {
+    console.log('CONOR')
+    const { quizCategory, numQuestions, quizDifficulty, quizType } = this.state
+    GetQuestions(
+      quizCategory,
+      numQuestions,
+      quizDifficulty,
+      quizType,
+      this.addItemToStore
+    )
+  }
 
   render() {
-    const pageState = this.state;
-    const { quizItems } = this.state;
+    const pageState = this.state
+    const { quizItems } = this.state
+    const { quiz } = this.props
+
     return (
       <div className="Home-body">
         <QuizHeader />
         <br />
         <Segment placeholder textAlign="center">
           <QuizSelectors
-            createQuiz={this.createQuiz}
+            createQuiz={this.pullDownQuestions}
             changeNumOfQuestions={this.changeNumOfQuestions}
             pageState={pageState}
           />
@@ -93,8 +130,11 @@ class Home extends Component {
           />
         </Segment>
       </div>
-    );
+    )
   }
 }
 
-export default withAuthenticator(Home, { includeGreetings: true });
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withAuthenticator(Home, { includeGreetings: true }))

@@ -6,10 +6,10 @@ export const quizGenres = [
   { text: 'Computers', value: 18 },
   { text: 'Sports', value: 21 },
   { text: 'Science', value: 17 },
-];
+]
 
 export const quizDifficulties = [
   { text: 'Easy', value: 'easy' },
   { text: 'Medium', value: 'medium' },
   { text: 'Hard', value: 'hard' },
-];
+]

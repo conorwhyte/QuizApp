@@ -1,19 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, hashHistory } from 'react-router-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { BrowserRouter, Route, hashHistory } from 'react-router-dom'
+import Information from './Pages/Information'
+import Home from './Pages/Home'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import rootReducer from './Reducers'
+import './index.css'
 
-import Information from './Pages/Information';
-import Home from './Pages/Home';
-import './index.css';
-
-const appElement = document.getElementById('App');
+const store = createStore(rootReducer)
+const appElement = document.getElementById('App')
 
 ReactDOM.render(
-  <BrowserRouter history={hashHistory}>
-    <div>
-      <Route exact path="/" component={Home} />
-      <Route path="/quiz/" component={Information} />
-    </div>
-  </BrowserRouter>,
+  <Provider store={store}>
+    <BrowserRouter history={hashHistory}>
+      <div>
+        <Route exact path="/" component={Home} />
+        <Route path="/quiz/" component={Information} />
+      </div>
+    </BrowserRouter>
+  </Provider>,
   appElement
-);
+)

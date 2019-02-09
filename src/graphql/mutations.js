@@ -19,7 +19,7 @@ export const createQuestion = `mutation CreateQuestion($input: CreateQuestionInp
     version
   }
 }
-`;
+`
 export const updateQuestion = `mutation UpdateQuestion($input: UpdateQuestionInput!) {
   updateQuestion(input: $input) {
     id
@@ -38,7 +38,7 @@ export const updateQuestion = `mutation UpdateQuestion($input: UpdateQuestionInp
     version
   }
 }
-`;
+`
 export const deleteQuestion = `mutation DeleteQuestion($input: DeleteQuestionInput!) {
   deleteQuestion(input: $input) {
     id
@@ -57,7 +57,7 @@ export const deleteQuestion = `mutation DeleteQuestion($input: DeleteQuestionInp
     version
   }
 }
-`;
+`
 export const createAnswer = `mutation CreateAnswer($input: CreateAnswerInput!) {
   createAnswer(input: $input) {
     id
@@ -76,7 +76,7 @@ export const createAnswer = `mutation CreateAnswer($input: CreateAnswerInput!) {
     version
   }
 }
-`;
+`
 export const updateAnswer = `mutation UpdateAnswer($input: UpdateAnswerInput!) {
   updateAnswer(input: $input) {
     id
@@ -95,7 +95,7 @@ export const updateAnswer = `mutation UpdateAnswer($input: UpdateAnswerInput!) {
     version
   }
 }
-`;
+`
 export const deleteAnswer = `mutation DeleteAnswer($input: DeleteAnswerInput!) {
   deleteAnswer(input: $input) {
     id
@@ -114,7 +114,7 @@ export const deleteAnswer = `mutation DeleteAnswer($input: DeleteAnswerInput!) {
     version
   }
 }
-`;
+`
 export const createQuiz = `mutation CreateQuiz($input: CreateQuizInput!) {
   createQuiz(input: $input) {
     id
@@ -132,7 +132,7 @@ export const createQuiz = `mutation CreateQuiz($input: CreateQuizInput!) {
     version
   }
 }
-`;
+`
 export const updateQuiz = `mutation UpdateQuiz($input: UpdateQuizInput!) {
   updateQuiz(input: $input) {
     id
@@ -150,7 +150,7 @@ export const updateQuiz = `mutation UpdateQuiz($input: UpdateQuizInput!) {
     version
   }
 }
-`;
+`
 export const deleteQuiz = `mutation DeleteQuiz($input: DeleteQuizInput!) {
   deleteQuiz(input: $input) {
     id
@@ -168,4 +168,4 @@ export const deleteQuiz = `mutation DeleteQuiz($input: DeleteQuizInput!) {
     version
   }
 }
-`;
+`

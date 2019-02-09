@@ -19,7 +19,7 @@ export const onCreateQuestion = `subscription OnCreateQuestion {
     version
   }
 }
-`;
+`
 export const onUpdateQuestion = `subscription OnUpdateQuestion {
   onUpdateQuestion {
     id
@@ -38,7 +38,7 @@ export const onUpdateQuestion = `subscription OnUpdateQuestion {
     version
   }
 }
-`;
+`
 export const onDeleteQuestion = `subscription OnDeleteQuestion {
   onDeleteQuestion {
     id
@@ -57,7 +57,7 @@ export const onDeleteQuestion = `subscription OnDeleteQuestion {
     version
   }
 }
-`;
+`
 export const onCreateAnswer = `subscription OnCreateAnswer {
   onCreateAnswer {
     id
@@ -76,7 +76,7 @@ export const onCreateAnswer = `subscription OnCreateAnswer {
     version
   }
 }
-`;
+`
 export const onUpdateAnswer = `subscription OnUpdateAnswer {
   onUpdateAnswer {
     id
@@ -95,7 +95,7 @@ export const onUpdateAnswer = `subscription OnUpdateAnswer {
     version
   }
 }
-`;
+`
 export const onDeleteAnswer = `subscription OnDeleteAnswer {
   onDeleteAnswer {
     id
@@ -114,7 +114,7 @@ export const onDeleteAnswer = `subscription OnDeleteAnswer {
     version
   }
 }
-`;
+`
 export const onCreateQuiz = `subscription OnCreateQuiz {
   onCreateQuiz {
     id
@@ -132,7 +132,7 @@ export const onCreateQuiz = `subscription OnCreateQuiz {
     version
   }
 }
-`;
+`
 export const onUpdateQuiz = `subscription OnUpdateQuiz {
   onUpdateQuiz {
     id
@@ -150,7 +150,7 @@ export const onUpdateQuiz = `subscription OnUpdateQuiz {
     version
   }
 }
-`;
+`
 export const onDeleteQuiz = `subscription OnDeleteQuiz {
   onDeleteQuiz {
     id
@@ -168,4 +168,4 @@ export const onDeleteQuiz = `subscription OnDeleteQuiz {
     version
   }
 }
-`;
+`

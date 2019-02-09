@@ -9,7 +9,7 @@ mutation (
    id
    title
   }
-}`;
+}`
 
 export const QNewQuestion = `
 mutation (
@@ -24,7 +24,7 @@ mutation (
    id
    text
    }
-}`;
+}`
 
 export const QNewAnswer = `
 mutation (
@@ -40,7 +40,7 @@ mutation (
   {
    id
    }
-}`;
+}`
 
 export const ListQuestions = `
 query ListQuestion {
@@ -50,7 +50,7 @@ query ListQuestion {
         text
       }
     }
-  }`;
+  }`
 
 export const ListQuizzes = `
 query MyQuizzes {
@@ -61,7 +61,7 @@ query MyQuizzes {
             title
         }
     }
-}`;
+}`
 
 export const ListQuizQuestions = `
 query MyQuestions ($quizID: ID!){
@@ -78,4 +78,4 @@ query MyQuestions ($quizID: ID!){
             }
         }
     }
-}`;
+}`

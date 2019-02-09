@@ -1,10 +1,10 @@
-import React from 'react';
-import { Button, Input, Dropdown } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
-import { quizGenres, quizDifficulties } from '../Assets/types';
+import React from 'react'
+import { Button, Input, Dropdown } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+import { quizGenres, quizDifficulties } from '../Assets/types'
 
 function QuizSelectors(props) {
-  const { pageState } = props;
+  const { pageState } = props
   return (
     <div className="Home-body-section">
       <br />
@@ -35,22 +35,22 @@ function QuizSelectors(props) {
 
       <br />
       <br />
-      <Link
+      {/* <Link
         to={{
           pathname: '/quiz',
           search: `?category=${pageState.quizCategory}`,
           state: { ...pageState },
         }}
-      >
-        <Button onClick={props.createQuiz} primary>
-          {' '}
-          Generate Quiz{' '}
-        </Button>
-      </Link>
+      > */}
+      <Button onClick={props.createQuiz} primary>
+        {' '}
+        Generate Quiz{' '}
+      </Button>
+      {/* </Link> */}
       <br />
       <br />
     </div>
-  );
+  )
 }
 
-export default QuizSelectors;
+export default QuizSelectors
