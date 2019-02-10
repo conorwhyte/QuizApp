@@ -4,13 +4,18 @@ import QuizSelectors from '../Components/QuizSelectors'
 import ExistingQuiz from '../Components/ExistingQuiz'
 import QuizHeader from '../Components/Header'
 import Amplify from 'aws-amplify'
-import { listAllQuiz, countQuizWithGenre, listQuestions } from '../Actions/CreateQuiz'
+import {
+  listAllQuiz,
+  countQuizWithGenre,
+  listQuestions,
+} from '../Actions/CreateQuiz'
 import { withAuthenticator } from 'aws-amplify-react'
 import { Divider, Segment } from 'semantic-ui-react'
 import aws_exports from '../aws-exports' // specify the location of aws-exports.js file on your project
 import { addQuestion, addQuizQuestions } from '../Actions/question.action'
 import { connect } from 'react-redux'
-import axios from 'axios';
+import axios from 'axios'
+import { checkIntersectionOfArrays, triviaAPIString } from '../Utils/formatter'
 
 import 'semantic-ui-css/semantic.min.css'
 import './Home.scss'
@@ -24,23 +29,6 @@ const mapStateToProps = state => ({
   storedQuestions: state.quiz.storedQuestions,
 })
 
-const triviaAPIString = (genre, numQuestions, type, difficulty) => {
-  const prefix = 'https://opentdb.com/api.php?';
-  const amount = `amount=${numQuestions}`;
-  const category = `&category=${genre}`;
-  const quizDifficulty = `&difficulty=${difficulty}`;
-  const quizType = `&type=${type}`;
- 
-  return prefix + amount + category + quizDifficulty + quizType;
-}
-
-const checkIntersectionOfArrays = (data, storedQuestions) => {
-  // Change the second data within filter to be storedQuestions
-  return data.filter( item => {
-    return -1 === storedQuestions.map(x => x.question).indexOf(item.question)
-  })
-}
-
 const mapDispatchToProps = dispatch => {
   return {
     addQuestionToQuiz: question => {
@@ -48,7 +36,7 @@ const mapDispatchToProps = dispatch => {
     },
     addQuestionsToQuiz: questions => {
       dispatch(addQuizQuestions(questions))
-    }
+    },
   }
 }
 
@@ -72,18 +60,9 @@ class Home extends Component {
 
   componentDidUpdate = () => {
     const { quizQuestions } = this.props
-    if ( quizQuestions.length === 10 ) {
-      this.props.history.push("/quiz")
-    } 
-  }
-
-  listAllQuizCallback = data => {
-    const allQuizzes = data.listQuizzes.items
-    const quizItems = allQuizzes.map(item => {
-      return { text: item.title, value: item.title }
-    })
-
-    this.setState({ quizItems })
+    if (quizQuestions.length === 10) {
+      this.props.history.push('/quiz')
+    }
   }
 
   changeGenre = (event, data) => {
@@ -113,14 +92,22 @@ class Home extends Component {
   pullDownQuestions = () => {
     const { quizCategory, numQuestions, quizDifficulty, quizType } = this.state
     const { addQuestionsToQuiz, storedQuestions } = this.props
-    const apiEndpoint = triviaAPIString(quizCategory, numQuestions, quizType, quizDifficulty)
-    axios.get(apiEndpoint).then((output) => {
-      const { results } = output.data;
-      const uniqueQuestions = checkIntersectionOfArrays(results, storedQuestions);
+    const apiEndpoint = triviaAPIString(
+      quizCategory,
+      numQuestions,
+      quizType,
+      quizDifficulty
+    )
+    axios.get(apiEndpoint).then(output => {
+      const { results } = output.data
+      const uniqueQuestions = checkIntersectionOfArrays(
+        results,
+        storedQuestions
+      )
       addQuestionsToQuiz(uniqueQuestions)
     })
   }
- 
+
   render() {
     const pageState = this.state
     const { quizItems } = this.state

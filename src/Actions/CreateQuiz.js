@@ -20,7 +20,7 @@ export async function listQuizQuestions(quizId, callback) {
   const { data } = await API.graphql(
     graphqlOperation(ListQuizQuestions, { quizID: quizId })
   )
-  return data;
+  return data
   // callback(data)
 }
 

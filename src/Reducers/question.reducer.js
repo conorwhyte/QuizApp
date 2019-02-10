@@ -1,4 +1,7 @@
-import { ADD_QUIZ_QUESTIONS, ADD_STORED_QUESTIONS } from '../Actions/question.action'
+import {
+  ADD_QUIZ_QUESTIONS,
+  ADD_STORED_QUESTIONS,
+} from '../Actions/question.action'
 
 const initialState = {
   quizReady: false,
@@ -20,13 +23,13 @@ function concatArrays(array, action) {
 const quiz = (state = initialState, action) => {
   switch (action.type) {
     case ADD_QUIZ_QUESTIONS:
-      return { 
-        ...state, 
+      return {
+        ...state,
         quizQuestions: concatArrays(state.quizQuestions, action),
       }
-    case ADD_STORED_QUESTIONS: 
-      return { 
-        ...state, 
+    case ADD_STORED_QUESTIONS:
+      return {
+        ...state,
         storedQuestions: action.questions,
       }
     default:

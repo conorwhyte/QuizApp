@@ -3,6 +3,7 @@ import Amplify, { API, graphqlOperation } from 'aws-amplify'
 import { withAuthenticator } from 'aws-amplify-react'
 import QuizProgress from '../Components/QuizProgress'
 import QuestionSegment from '../Components/QuestionSegment'
+import Placeholder from '../Components/Dimmer';
 import { Segment, Form, Card, Dimmer, Loader } from 'semantic-ui-react'
 import aws_exports from '../aws-exports' // specify the location of aws-exports.js file on your project
 import {
@@ -10,8 +11,8 @@ import {
   createNewQuiz,
   listQuizQuestions,
 } from '../Actions/CreateQuiz'
-import { connect } from "react-redux";
-import { shuffleArray } from '../Utils/formatter';
+import { connect } from 'react-redux'
+import { shuffleArray, decodeHTML } from '../Utils/formatter'
 
 import './Information.scss'
 import 'semantic-ui-css/semantic.min.css'
@@ -20,9 +21,9 @@ Amplify.configure(aws_exports)
 
 const mapStateToProps = state => {
   return {
-    quizQuestions: state.quiz.quizQuestions
-  };
-};
+    quizQuestions: state.quiz.quizQuestions,
+  }
+}
 
 class Information extends Component {
   constructor(props) {
@@ -39,43 +40,22 @@ class Information extends Component {
 
   componentDidMount = () => {
     const { quizQuestions } = this.props
-    this.formatQuestions(quizQuestions);
+    this.formatQuestions(quizQuestions)
   }
 
   formatQuestions = data => {
     const results = data.map(item => {
-      let answers = item.incorrect_answers;
-      answers.push(item.correct_answer);
+      let answers = item.incorrect_answers
+      answers.push(item.correct_answer)
       return {
-        question: item.question, 
+        question: item.question,
         answers,
         correct_answer: item.correct_answer,
       }
     })
 
     const question = results[0].question
-    const answers = results[0].answers
-    this.setState({
-      results,
-      question,
-      answers,
-    })
-  }
-
-  setQuestions = data => {
-    data = data.getQuiz.questions.items
-    const results = data.map(item => {
-      const answers = item.answers.items
-      return {
-        question: item.text,
-        answers: answers.map(answer => {
-          return answer.text
-        }),
-      }
-    })
-
-    const question = results[0].question
-    const answers = results[0].answers
+    const answers = shuffleArray(results[0].answers)
     this.setState({
       results,
       question,
@@ -87,7 +67,7 @@ class Information extends Component {
     const { results, index } = this.state
     const chosenAnswer = data.header
     const { correct_answer } = results[index]
-    return correct_answer === chosenAnswer
+    return decodeHTML(correct_answer) === chosenAnswer
   }
 
   showFinishedRound = () => {
@@ -108,27 +88,19 @@ class Information extends Component {
     }))
 
     setTimeout(() => {
-      //Start the timer
-      // Move onto the next question
       const { results, index } = this.state
       if (index <= 9) {
         const question = results[index].question
         const answers = shuffleArray(results[index].answers)
-        this.setState(prevState => ({
+        this.setState({
           question,
           answers,
           showAlert: false,
-        }))
+        })
       } else {
         this.showFinishedRound()
       }
     }, 1500)
-  }
-
-  decodeHTML = html => {
-    const txt = document.createElement('textarea')
-    txt.innerHTML = html
-    return txt.value
   }
 
   showAlert = () => {
@@ -145,25 +117,22 @@ class Information extends Component {
 
   render() {
     const { question, answers, index, showAlert } = this.state
-    const decodeQuestion = this.decodeHTML(question)
+    const decodeQuestion = decodeHTML(question)
     const progressPercent = index * 10
 
+    console.log('Q', question)
     return (
       <div className="Quiz-body">
-        {question === 'test' && (
-          <Dimmer active>
-            <Loader indeterminate>Preparing Quiz</Loader>
-          </Dimmer>
-        )}
-        <QuizProgress progressPercent={progressPercent} />
+        { question === 'test' && <Placeholder />}
         <Form>
+          <QuizProgress progressPercent={progressPercent} />
           <QuestionSegment header={decodeQuestion} />
 
           {answers.map((answer, index) => (
             <Card
               fluid
               color="green"
-              header={this.decodeHTML(answer)}
+              header={decodeHTML(answer)}
               key={`Checkbox${index}`}
               className={'backgroundRed'}
               onClick={this.submitAndPopulate}
