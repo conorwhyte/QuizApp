@@ -81,6 +81,7 @@ class Home extends Component {
         return quiz.text
       }
     })
+    
     const { text } = genreTitle[0]
     const numberOfQuizzes = countQuizWithGenre(text, quizItems)
     this.setState({
@@ -126,6 +127,7 @@ class Home extends Component {
         <br />
         <Segment placeholder textAlign="center">
           <QuizSelectors
+            changeGenre={this.changeGenre}
             createQuiz={this.pullDownQuestions}
             changeNumOfQuestions={this.changeNumOfQuestions}
             pageState={pageState}
