@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import { parse } from 'query-string'
-
 import Amplify, { API, graphqlOperation } from 'aws-amplify'
-import { GetQuestions } from '../Actions/GetQuestions'
 import { withAuthenticator } from 'aws-amplify-react'
 import QuizProgress from '../Components/QuizProgress'
+import QuestionSegment from '../Components/QuestionSegment'
 import { Segment, Form, Card, Dimmer, Loader } from 'semantic-ui-react'
 import aws_exports from '../aws-exports' // specify the location of aws-exports.js file on your project
 import {
@@ -12,11 +10,19 @@ import {
   createNewQuiz,
   listQuizQuestions,
 } from '../Actions/CreateQuiz'
+import { connect } from "react-redux";
+import { shuffleArray } from '../Utils/formatter';
 
 import './Information.scss'
 import 'semantic-ui-css/semantic.min.css'
 
 Amplify.configure(aws_exports)
+
+const mapStateToProps = state => {
+  return {
+    quizQuestions: state.quiz.quizQuestions
+  };
+};
 
 class Information extends Component {
   constructor(props) {
@@ -31,38 +37,29 @@ class Information extends Component {
     }
   }
 
-  componentDidMount() {
-    const { location } = this.props
-    const quizCategory = parse(location.search).category
-    const { numQuestions, quizDifficulty, quizType } = location.state
-
-    GetQuestions(
-      quizCategory,
-      numQuestions,
-      quizDifficulty,
-      quizType,
-      this.populateQuestions
-    )
+  componentDidMount = () => {
+    const { quizQuestions } = this.props
+    this.formatQuestions(quizQuestions);
   }
 
-  populateQuestions = async jsonResponse => {
-    const { results } = jsonResponse
-    const { location } = this.props
-    const {
-      quizCategoryTitle,
-      quizDifficulty,
-      numberOfQuizzes,
-    } = location.state
+  formatQuestions = data => {
+    const results = data.map(item => {
+      let answers = item.incorrect_answers;
+      answers.push(item.correct_answer);
+      return {
+        question: item.question, 
+        answers,
+        correct_answer: item.correct_answer,
+      }
+    })
 
-    console.log('RESULTS: ', results)
-
-    // createNewQuiz(quizCategoryTitle, numberOfQuizzes, quizDifficulty, results);
-
-    // const quizId = AppStore.getQuizId().id;
-    // setTimeout(() => {
-    //   //Start the timer
-    //   listQuizQuestions(quizId, this.setQuestions);
-    // }, 2000);
+    const question = results[0].question
+    const answers = results[0].answers
+    this.setState({
+      results,
+      question,
+      answers,
+    })
   }
 
   setQuestions = data => {
@@ -116,8 +113,7 @@ class Information extends Component {
       const { results, index } = this.state
       if (index <= 9) {
         const question = results[index].question
-        const answers = results[index].incorrect_answers
-        answers.push(results[index].correct_answer)
+        const answers = shuffleArray(results[index].answers)
         this.setState(prevState => ({
           question,
           answers,
@@ -142,14 +138,13 @@ class Information extends Component {
       : `Incorrect! The right answer is ${results[index - 1].correct_answer}`
     return (
       <Segment inverted color={isCorrect ? 'green' : 'red'}>
-        {' '}
-        {alertText}{' '}
+        {alertText}
       </Segment>
     )
   }
 
   render() {
-    const { question, answers, index } = this.state
+    const { question, answers, index, showAlert } = this.state
     const decodeQuestion = this.decodeHTML(question)
     const progressPercent = index * 10
 
@@ -162,12 +157,8 @@ class Information extends Component {
         )}
         <QuizProgress progressPercent={progressPercent} />
         <Form>
-          <Form.Group grouped>
-            <Segment size={'big'} className="inverted aligned">
-              {decodeQuestion}
-            </Segment>
-            <br />
-          </Form.Group>
+          <QuestionSegment header={decodeQuestion} />
+
           {answers.map((answer, index) => (
             <Card
               fluid
@@ -178,11 +169,11 @@ class Information extends Component {
               onClick={this.submitAndPopulate}
             />
           ))}
-          {this.state.showAlert && this.showAlert()}
+          {showAlert && this.showAlert()}
         </Form>
       </div>
     )
   }
 }
 
-export default withAuthenticator(Information)
+export default connect(mapStateToProps)(Information)

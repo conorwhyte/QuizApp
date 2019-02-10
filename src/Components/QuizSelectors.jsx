@@ -42,10 +42,10 @@ function QuizSelectors(props) {
           state: { ...pageState },
         }}
       > */}
-      <Button onClick={props.createQuiz} primary>
-        {' '}
-        Generate Quiz{' '}
-      </Button>
+        <Button onClick={props.createQuiz} primary>
+          {' '}
+          Generate Quiz{' '}
+        </Button>
       {/* </Link> */}
       <br />
       <br />
