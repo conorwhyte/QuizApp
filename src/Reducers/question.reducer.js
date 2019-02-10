@@ -1,10 +1,12 @@
 import {
   ADD_QUIZ_QUESTIONS,
   ADD_STORED_QUESTIONS,
+  ADD_QUIZ_ID,
 } from '../Actions/question.action'
 
 const initialState = {
   quizReady: false,
+  quizId: '',
   quizQuestions: [],
   storedQuestions: [],
 }
@@ -31,6 +33,11 @@ const quiz = (state = initialState, action) => {
       return {
         ...state,
         storedQuestions: action.questions,
+      }
+    case ADD_QUIZ_ID:
+      return {
+        ...state,
+        quizId: action.quizId,
       }
     default:
       return state

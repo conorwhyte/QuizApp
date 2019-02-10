@@ -1,3 +1,5 @@
+import { quizGenres } from '../Assets/types'
+
 export function shuffleArray(a) {
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -27,4 +29,12 @@ export const decodeHTML = html => {
     const txt = document.createElement('textarea')
     txt.innerHTML = html
     return txt.value
-  }
+}
+
+export const getQuizGenre = quizCategoryNumber => {
+  return quizGenres.filter(quiz => {
+    if (quiz.value === quizCategoryNumber) {
+      return quiz.text
+    }
+  })[0]
+}

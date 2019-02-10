@@ -21,7 +21,6 @@ export async function listQuizQuestions(quizId, callback) {
     graphqlOperation(ListQuizQuestions, { quizID: quizId })
   )
   return data
-  // callback(data)
 }
 
 export function countQuizWithGenre(genre, quizzes) {
@@ -34,14 +33,12 @@ export function countQuizWithGenre(genre, quizzes) {
   return count
 }
 
-export async function createNewQuiz(genre, number, difficulty, results) {
+export async function createNewQuiz(genre, number, difficulty) {
   const quizTitle = `${genre}-${difficulty}-quiz${number}`
   const resp = await GqlRetry(QNewQuiz, { title: quizTitle })
-  const quizId = resp.data.createQuiz.id
 
-  AppActions.setQuizId({ id: quizId, title: quizTitle })
-
-  await checkQuestions(results)
+  // Create the quiz 
+  return resp.data.createQuiz.id
 }
 
 export async function listQuestions() {

@@ -8,14 +8,15 @@ import {
   listAllQuiz,
   countQuizWithGenre,
   listQuestions,
+  createNewQuiz,
 } from '../Actions/CreateQuiz'
 import { withAuthenticator } from 'aws-amplify-react'
 import { Divider, Segment } from 'semantic-ui-react'
 import aws_exports from '../aws-exports' // specify the location of aws-exports.js file on your project
-import { addQuestion, addQuizQuestions } from '../Actions/question.action'
+import { addQuestion, addQuizQuestions, addQuizId } from '../Actions/question.action'
 import { connect } from 'react-redux'
 import axios from 'axios'
-import { checkIntersectionOfArrays, triviaAPIString } from '../Utils/formatter'
+import { checkIntersectionOfArrays, triviaAPIString, getQuizGenre } from '../Utils/formatter'
 
 import 'semantic-ui-css/semantic.min.css'
 import './Home.scss'
@@ -37,6 +38,9 @@ const mapDispatchToProps = dispatch => {
     addQuestionsToQuiz: questions => {
       dispatch(addQuizQuestions(questions))
     },
+    addCurrentQuizId: quizId => {
+      dispatch(addQuizId(quizId))
+    }
   }
 }
 
@@ -59,8 +63,13 @@ class Home extends Component {
   }
 
   componentDidUpdate = () => {
-    const { quizQuestions } = this.props
+    const { quizQuestions, addCurrentQuizId } = this.props
+    const { quizDifficulty, quizCategory } = this.state
     if (quizQuestions.length === 10) {
+      const { text } = getQuizGenre(quizCategory)
+      createNewQuiz(text, 0 ,quizDifficulty).then( quizId => {
+        addCurrentQuizId(quizId);
+      })
       this.props.history.push('/quiz')
     }
   }

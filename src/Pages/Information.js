@@ -119,8 +119,7 @@ class Information extends Component {
     const { question, answers, index, showAlert } = this.state
     const decodeQuestion = decodeHTML(question)
     const progressPercent = index * 10
-
-    console.log('Q', question)
+    
     return (
       <div className="Quiz-body">
         { question === 'test' && <Placeholder />}
