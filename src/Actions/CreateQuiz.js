@@ -76,6 +76,17 @@ export async function checkQuestions(pulledQuestions) {
   })
 }
 
+export async function addQuestionsToQuiz(questions, quizId) {
+  for (question of questions) {
+    const formattedQuestion = transformQuestion(question);
+    await submitQuestionToQuiz(formattedQuestion, quizId)
+  }
+}
+
+async function submitQuestionToQuiz(formattedQuestion, quizId) {
+
+}
+
 let countForAnswers = 0
 async function submitNewQuestion(input) {
   const quizId = AppStore.getQuizId().id

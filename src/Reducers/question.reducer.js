@@ -2,6 +2,7 @@ import {
   ADD_QUIZ_QUESTIONS,
   ADD_STORED_QUESTIONS,
   ADD_QUIZ_ID,
+  ADD_QUIZ_SCORE,
 } from '../Actions/question.action'
 
 const initialState = {
@@ -9,6 +10,7 @@ const initialState = {
   quizId: '',
   quizQuestions: [],
   storedQuestions: [],
+  quizScore: '',
 }
 
 function insertItems(array, action) {
@@ -38,6 +40,12 @@ const quiz = (state = initialState, action) => {
       return {
         ...state,
         quizId: action.quizId,
+      }
+    case ADD_QUIZ_SCORE:
+      return {
+        ...state,
+        quizScore: action.quizScore,
+        quizQuestions: [],
       }
     default:
       return state

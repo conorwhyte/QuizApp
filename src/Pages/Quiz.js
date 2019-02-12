@@ -7,14 +7,13 @@ import Placeholder from '../Components/Dimmer';
 import { Segment, Form, Card, Dimmer, Loader } from 'semantic-ui-react'
 import aws_exports from '../aws-exports' // specify the location of aws-exports.js file on your project
 import {
-  checkQuestions,
-  createNewQuiz,
-  listQuizQuestions,
+  addQuestionsToQuiz,
 } from '../Actions/CreateQuiz'
+import { addQuizScore } from '../Actions/question.action'
 import { connect } from 'react-redux'
 import { shuffleArray, decodeHTML } from '../Utils/formatter'
 
-import './Information.scss'
+import './Quiz.scss'
 import 'semantic-ui-css/semantic.min.css'
 
 Amplify.configure(aws_exports)
@@ -22,10 +21,19 @@ Amplify.configure(aws_exports)
 const mapStateToProps = state => {
   return {
     quizQuestions: state.quiz.quizQuestions,
+    quizId: state.quiz.quizId,
   }
 }
 
-class Information extends Component {
+const mapDispatchToProps = dispatch => {
+  return {
+    addCompletedQuizScore: quizScore => {
+      dispatch(addQuizScore(quizScore))
+    },
+  }
+}
+
+class Quiz extends Component {
   constructor(props) {
     super(props)
 
@@ -71,8 +79,15 @@ class Information extends Component {
   }
 
   showFinishedRound = () => {
+    const { addCompletedQuizScore, history, quizQuestions } = this.props
     const { numberOfQuestionsCorrect } = this.state
-    alert(`${numberOfQuestionsCorrect}/10`)
+    addCompletedQuizScore(`${numberOfQuestionsCorrect}/10`)
+
+    // Store the quiz questions in the quiz API
+    addQuestionsToQuiz(quizQuestions, quizId).then(() => {
+      // Once the quiz is created we can go back to the home page
+      history.push('/')
+    })
   }
 
   submitAndPopulate = (event, data) => {
@@ -119,7 +134,7 @@ class Information extends Component {
     const { question, answers, index, showAlert } = this.state
     const decodeQuestion = decodeHTML(question)
     const progressPercent = index * 10
-    
+
     return (
       <div className="Quiz-body">
         { question === 'test' && <Placeholder />}
@@ -137,11 +152,11 @@ class Information extends Component {
               onClick={this.submitAndPopulate}
             />
           ))}
-          {showAlert && this.showAlert()}
+          { showAlert && this.showAlert() }
         </Form>
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps)(Information)
+export default connect(mapStateToProps, mapDispatchToProps)(Quiz)

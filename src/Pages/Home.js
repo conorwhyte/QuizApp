@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { quizGenres } from '../Assets/types'
 import QuizSelectors from '../Components/QuizSelectors'
 import ExistingQuiz from '../Components/ExistingQuiz'
-import QuizHeader from '../Components/Header'
+import QuizHeader from '../Components/QuizHeader'
+import QuizScore from '../Components/QuizScore'
 import Amplify from 'aws-amplify'
 import {
   listAllQuiz,
@@ -28,6 +29,7 @@ const mapStateToProps = state => ({
   quiz: state,
   quizQuestions: state.quiz.quizQuestions,
   storedQuestions: state.quiz.storedQuestions,
+  quizScore: state.quiz.quizScore,
 })
 
 const mapDispatchToProps = dispatch => {
@@ -121,10 +123,13 @@ class Home extends Component {
   render() {
     const pageState = this.state
     const { quizItems } = this.state
+    const { quizScore } = this.props
+    
     return (
       <div className="Home-body">
         <QuizHeader />
         <br />
+        { quizScore !== '' && <QuizScore quizScore={quizScore} /> }
         <Segment placeholder textAlign="center">
           <QuizSelectors
             changeGenre={this.changeGenre}
