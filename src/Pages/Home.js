@@ -14,7 +14,7 @@ import {
 import { withAuthenticator } from 'aws-amplify-react'
 import { Divider, Segment } from 'semantic-ui-react'
 import aws_exports from '../aws-exports' // specify the location of aws-exports.js file on your project
-import { addQuestion, addQuizQuestions, addQuizId } from '../Actions/question.action'
+import { addQuestion, addQuizQuestions, addQuizId, addStoredQuestions } from '../Actions/question.action'
 import { connect } from 'react-redux'
 import axios from 'axios'
 import { checkIntersectionOfArrays, triviaAPIString, getQuizGenre } from '../Utils/formatter'
@@ -42,7 +42,10 @@ const mapDispatchToProps = dispatch => {
     },
     addCurrentQuizId: quizId => {
       dispatch(addQuizId(quizId))
-    }
+    },
+    storeCurrentQuestions: questions => {
+      dispatch(addStoredQuestions(questions))
+    },
   }
 }
 
@@ -61,13 +64,13 @@ class Home extends Component {
 
   componentDidMount() {
     // For now list all the questions, don't filter
-    listQuestions().then(data => data)
+    listQuestions().then(data => this.props.storeCurrentQuestions(data))
   }
 
   componentDidUpdate = () => {
     const { quizQuestions, addCurrentQuizId } = this.props
-    const { quizDifficulty, quizCategory } = this.state
-    if (quizQuestions.length === 10) {
+    const { quizDifficulty, quizCategory, numQuestions } = this.state
+    if (quizQuestions.length === numQuestions) {
       const { text } = getQuizGenre(quizCategory)
       createNewQuiz(text, 0 ,quizDifficulty).then( quizId => {
         addCurrentQuizId(quizId);
@@ -110,13 +113,54 @@ class Home extends Component {
       quizType,
       quizDifficulty
     )
+
     axios.get(apiEndpoint).then(output => {
       const { results } = output.data
       const uniqueQuestions = checkIntersectionOfArrays(
         results,
         storedQuestions
       )
-      addQuestionsToQuiz(uniqueQuestions)
+
+      if ( uniqueQuestions.length !== 10 ) {
+        this.retryQuestions(uniqueQuestions, storedQuestions);
+      } else {
+        addQuestionsToQuiz(uniqueQuestions)
+      }
+    })
+  }
+
+  retryQuestions = (currentQuestions, storedQuestions) => {
+    const { quizCategory, numQuestions, quizDifficulty, quizType } = this.state
+    const { addQuestionsToQuiz } = this.props
+    const apiEndpoint = triviaAPIString(
+      quizCategory,
+      numQuestions,
+      quizType,
+      quizDifficulty
+    )
+
+    axios.get(apiEndpoint).then(output => {
+      const { results } = output.data
+      const uniqueQuestions = checkIntersectionOfArrays(
+        results,
+        storedQuestions
+      )
+      const secondCheck = checkIntersectionOfArrays(
+        uniqueQuestions,
+        currentQuestions,
+      )
+      const numberOfQuesToAdd = numQuestions - currentQuestions.length;
+      let questionsToAdd = [];
+      for(let i=0; i<numberOfQuesToAdd; i++) {
+        questionsToAdd.push(secondCheck[i]);
+      }
+      
+      const combinedArray = currentQuestions.concat(questionsToAdd);
+      if ( combinedArray.length < 10 ) {
+        this.retryQuestions(combinedArray, storedQuestions);
+      } else {
+        addQuestionsToQuiz(combinedArray)
+      }
     })
   }
 
@@ -152,5 +196,4 @@ class Home extends Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Home)
-// )(withAuthenticator(Home, { includeGreetings: true }))
+)(withAuthenticator(Home, { includeGreetings: true }))

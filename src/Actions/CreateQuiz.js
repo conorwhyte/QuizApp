@@ -46,71 +46,47 @@ export async function listQuestions() {
   return data.listQuestions.items
 }
 
-export async function checkQuestions(pulledQuestions) {
-  const { data } = await API.graphql(graphqlOperation(ListQuestions))
-  const arrayOfQuestions = data.listQuestions.items
-  // const quiz = AppStore.getQuizId();
-
-  pulledQuestions.forEach((currentPulledQuestion, index) => {
-    let addQuestionToQuiz = true
-    arrayOfQuestions.forEach(question => {
-      if (currentPulledQuestion.question === question.text) {
-        addQuestionToQuiz = false
-        return
-      }
-    })
-
-    if (addQuestionToQuiz) {
-      const quizParameters = {
-        quizId: quiz.id,
-        quizTitle: quiz.title,
-        questionText: currentPulledQuestion.question,
-        answerText1: currentPulledQuestion.correct_answer,
-        answerText2: currentPulledQuestion.incorrect_answers[0],
-        answerText3: currentPulledQuestion.incorrect_answers[1],
-        answerText4: currentPulledQuestion.incorrect_answers[2],
-        correctAnswer: currentPulledQuestion.correct_answer,
-      }
-      submitNewQuestion(quizParameters)
-    }
-  })
-}
-
 export async function addQuestionsToQuiz(questions, quizId) {
-  for (question of questions) {
-    const formattedQuestion = transformQuestion(question);
+  for (const question of questions) {
+    const formattedQuestion = transformQuestion(question, quizId);
     await submitQuestionToQuiz(formattedQuestion, quizId)
   }
 }
 
 async function submitQuestionToQuiz(formattedQuestion, quizId) {
-
-}
-
-let countForAnswers = 0
-async function submitNewQuestion(input) {
-  const quizId = AppStore.getQuizId().id
   const newQ = await GqlRetry(QNewQuestion, {
-    text: input.questionText,
+    text: formattedQuestion.questionText,
     quizId: quizId,
   })
   _.map(
     [
-      input.answerText1,
-      input.answerText2,
-      input.answerText3,
-      input.answerText4,
+      formattedQuestion.answerText1,
+      formattedQuestion.answerText2,
+      formattedQuestion.answerText3,
+      formattedQuestion.answerText4,
     ],
     (ans, idx) => {
       if (ans === null) return
-      countForAnswers += 1
       GqlRetry(QNewAnswer, {
         questionId: newQ.data.createQuestion.id,
         text: ans,
-        correct: input.correctAnswer === 'answerText' + (idx + 1),
+        correct: formattedQuestion.correctAnswer === 'answerText' + (idx + 1),
       })
     }
   )
+}
+
+function transformQuestion(question, quizId) {
+  return {
+    quizId: quizId,
+    quizTitle: 'Test Quiz',
+    questionText: question.question,
+    answerText1: question.correct_answer,
+    answerText2: question.incorrect_answers[0],
+    answerText3: question.incorrect_answers[1],
+    answerText4: question.incorrect_answers[2],
+    correctAnswer: question.correct_answer,
+  }
 }
 
 const GqlRetry = async (query, variables) => {

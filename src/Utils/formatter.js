@@ -11,7 +11,7 @@ export function shuffleArray(a) {
 export const checkIntersectionOfArrays = (data, storedQuestions) => {
   // Change the second data within filter to be storedQuestions
   return data.filter(item => {
-    return -1 === storedQuestions.map(x => x.question).indexOf(item.question)
+    return -1 === storedQuestions.map(x => x.text).indexOf(item.question)
   })
 }
 

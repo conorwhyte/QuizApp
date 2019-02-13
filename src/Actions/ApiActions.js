@@ -44,7 +44,7 @@ mutation (
 
 export const ListQuestions = `
 query ListQuestion {
-    listQuestions {
+    listQuestions(limit: 100) {
       items {
         id
         text

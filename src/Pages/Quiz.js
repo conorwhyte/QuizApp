@@ -42,6 +42,7 @@ class Quiz extends Component {
       answers: [],
       index: 0,
       showAlert: false,
+      showSpinner: false,
       numberOfQuestionsCorrect: 0,
     }
   }
@@ -79,10 +80,11 @@ class Quiz extends Component {
   }
 
   showFinishedRound = () => {
-    const { addCompletedQuizScore, history, quizQuestions } = this.props
+    const { addCompletedQuizScore, history, quizQuestions, quizId } = this.props
     const { numberOfQuestionsCorrect } = this.state
     addCompletedQuizScore(`${numberOfQuestionsCorrect}/10`)
 
+    this.setState({showSpinner: true})
     // Store the quiz questions in the quiz API
     addQuestionsToQuiz(quizQuestions, quizId).then(() => {
       // Once the quiz is created we can go back to the home page
@@ -131,13 +133,13 @@ class Quiz extends Component {
   }
 
   render() {
-    const { question, answers, index, showAlert } = this.state
+    const { question, answers, index, showAlert, showSpinner } = this.state
     const decodeQuestion = decodeHTML(question)
     const progressPercent = index * 10
 
     return (
       <div className="Quiz-body">
-        { question === 'test' && <Placeholder />}
+        {(question === 'test' || showSpinner)  && <Placeholder />}
         <Form>
           <QuizProgress progressPercent={progressPercent} />
           <QuestionSegment header={decodeQuestion} />
