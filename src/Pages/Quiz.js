@@ -161,4 +161,7 @@ class Quiz extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Quiz)
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps,
+)(withAuthenticator(Quiz, { includeGreetings: true }))
