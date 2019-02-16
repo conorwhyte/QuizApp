@@ -49,13 +49,11 @@ class Quiz extends Component {
 
   componentDidMount = () => {
     const { quizQuestions } = this.props
-    console.log('quizQuestions', quizQuestions)
     this.formatQuestions(quizQuestions)
   }
 
   formatQuestions = data => {
     const results = data.map(item => {
-      console.log('item', item)
       let answers = item.incorrect_answers
       answers.push(item.correct_answer)
       return {

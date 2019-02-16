@@ -67,15 +67,26 @@ class Home extends Component {
     listQuestions().then(data => this.props.storeCurrentQuestions(data))
   }
 
+  checkLength(quizQues) {
+    let count = 0;
+    const { numQuestions } = this.state;
+    for (let i=0; i <= numQuestions; i++ ) {
+      if (quizQues[i] !== undefined) {
+        count +=1;
+      }
+    }
+    return count;
+  }
+
   componentDidUpdate = () => {
     const { quizQuestions, addCurrentQuizId } = this.props
     const { quizDifficulty, quizCategory, numQuestions } = this.state
-    if (quizQuestions.length === numQuestions) {
+    if (this.checkLength(quizQuestions) === numQuestions) {
       const { text } = getQuizGenre(quizCategory)
       createNewQuiz(text, 0 ,quizDifficulty).then( quizId => {
         addCurrentQuizId(quizId);
+        this.props.history.push('/quiz')
       })
-      this.props.history.push('/quiz')
     }
   }
 
@@ -121,7 +132,7 @@ class Home extends Component {
         storedQuestions
       )
 
-      if ( uniqueQuestions.length !== 10 ) {
+      if ( this.checkLength(uniqueQuestions) < 10 ) {
         this.retryQuestions(uniqueQuestions, storedQuestions);
       } else {
         addQuestionsToQuiz(uniqueQuestions)
@@ -149,14 +160,16 @@ class Home extends Component {
         uniqueQuestions,
         currentQuestions,
       )
-      const numberOfQuesToAdd = numQuestions - currentQuestions.length;
+
+      const idealDifference = numQuestions - currentQuestions.length;
+      const numberOfQuesToAdd = idealDifference < secondCheck.length ? idealDifference : secondCheck.length;
       let questionsToAdd = [];
       for(let i=0; i<numberOfQuesToAdd; i++) {
         questionsToAdd.push(secondCheck[i]);
       }
       
       const combinedArray = currentQuestions.concat(questionsToAdd);
-      if ( combinedArray.length < 10 ) {
+      if ( this.checkLength(combinedArray) < 10 ) {
         this.retryQuestions(combinedArray, storedQuestions);
       } else {
         addQuestionsToQuiz(combinedArray)
